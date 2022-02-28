@@ -1,2 +1,2 @@
 # 42_Projects
-42 42 42 42 42
+Projects made in 42 Lisboa
