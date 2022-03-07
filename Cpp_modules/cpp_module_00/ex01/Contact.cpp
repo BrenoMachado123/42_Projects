@@ -6,20 +6,21 @@
 /*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 14:52:45 by bmachado          #+#    #+#             */
-/*   Updated: 2022/02/28 17:26:05 by bmachado         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:41:30 by bmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Contact.hpp"
 
-static void	print_parsed_info(std::string item) {
+static void	print_parsed_info(std::string item, bool end_of_lst) {
 	if (item.length() > 10) {
 		item = item.substr(0, 9);
 		item = item.replace(9,9,".");
 		std::cout << item << "|";
 		return ;
 	}
-	std::cout << std::setw(10) << item << "|";
+	std::cout << std::setw(10) << item;
+	if (end_of_lst == false) { std::cout << "|"; }
 }
 
 void	Contact::create() {
@@ -37,10 +38,12 @@ void	Contact::create() {
 }
 
 void	Contact::print_basic(int index) {
-	std::cout << std::setw(10) << index << "|";
-	print_parsed_info(_fname);
-	print_parsed_info(_lname);
-	print_parsed_info(_nick);
+	bool end_of_lst = false;
+	std::cout << std::setw(10) << index + 1 << "|";
+	print_parsed_info(_fname, end_of_lst);
+	print_parsed_info(_lname, end_of_lst);
+	end_of_lst = true;
+	print_parsed_info(_nick, end_of_lst);
 	std::cout << std::endl;
 }
 

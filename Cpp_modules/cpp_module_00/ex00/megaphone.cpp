@@ -6,7 +6,7 @@
 /*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 17:39:53 by bmachado          #+#    #+#             */
-/*   Updated: 2022/02/28 14:45:19 by bmachado         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:15:53 by bmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int	main(int argc, char **argv) {
 		std::cout << "* LOUD AND UNBEARABLE NOISE SOUND *";
 	else {
 		for (int i = 1; argv[i]; i++) {
-			for (int j = 0; argv[i][j]; j++)
-				argv[i][j] = std::toupper(argv[i][j]);
-			std::cout << argv[i] << " "; 
+			std::string str(argv[i]);
+			for (int j = 0; j < (int)str.length(); j++)
+				str[j] = std::toupper(str[j]);
+			std::cout << str << " "; 
 		}
 	}
 	std::cout << std::endl;

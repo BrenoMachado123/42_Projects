@@ -6,7 +6,7 @@
 /*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:26:37 by bmachado          #+#    #+#             */
-/*   Updated: 2022/02/28 17:26:22 by bmachado         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:34:11 by bmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ int	main() {
 	while (option != "EXIT") {
 		print_options(counter);
 		getline(std::cin >> std::ws, option);
-		if (option == "ADD") { phonebook.add(); counter++; }
-		else if (option == "SEARCH")
-			phonebook.search();
-		else if (option != "EXIT")
-			std::cout << ">> Invalid option <<" << std::endl;
+		if (option == "ADD") { phonebook.add(); if (counter < 8) { counter++; } }
+		else if (option == "SEARCH") { phonebook.search(); }
+		else if (option != "EXIT") { std::cout << ">> Invalid option <<" << std::endl; };
 	}
 	return (0);
 }

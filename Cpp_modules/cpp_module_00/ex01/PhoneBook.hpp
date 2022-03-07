@@ -12,6 +12,7 @@ class PhoneBook {
 	private:
 		Contact		_contact_lst[8];
 		static int	_index;
+		static int	_old;
 };
 
 #endif
