@@ -1,3 +1,3 @@
 # 42 CPP MODULES
 
-42 School learing modules about C++
+42 School learning modules about C++
