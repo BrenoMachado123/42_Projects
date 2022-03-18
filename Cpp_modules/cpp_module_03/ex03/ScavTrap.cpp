@@ -1,10 +1,11 @@
 #include "ScavTrap.hpp"
 
 ScavTrap::ScavTrap() {
+	_name = "Scavbot Defaultmont";
 	std::cout << "ScavTrap Initialized" << std::endl;
 }
 
-ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
+ScavTrap::ScavTrap(std::string name): ClapTrap(name) {
 	_hitPoints=100; _energyPoints=50; _attackDamage=20;
 	std::cout << "ScavTrap Initialized" << std::endl;
 }
@@ -25,7 +26,7 @@ ScavTrap::~ScavTrap() {
 
 void	ScavTrap::guardGate() {
 	if (this->active()) {
-		std::cout << "ScavCrap " << this->_name << " has enterred in Gate keeper mode!"
+		std::cout << "ScavCrap " << this->_name << " have enterred in Gate keeper mode!"
 		<< std::endl;
 		this->setDmg(0);
 		this->_hitPoints += 50;

@@ -4,8 +4,8 @@ ScavTrap::ScavTrap() {
 	std::cout << "ScavTrap Initialized" << std::endl;
 }
 
-ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
-	_hitPoints=100; _energyPoints=50; _attackDamage=20;
+ScavTrap::ScavTrap(std::string name) {
+_name = name; _hitPoints=100; _energyPoints=50; _attackDamage=20;
 	std::cout << "ScavTrap Initialized" << std::endl;
 }
 
@@ -25,20 +25,11 @@ ScavTrap::~ScavTrap() {
 
 void	ScavTrap::guardGate() {
 	if (this->active()) {
-		std::cout << "ScavCrap " << this->_name << " has enterred in Gate keeper mode!"
+		std::cout << "ScavCrap " << this->_name << " have enterred in Gate keeper mode!"
 		<< std::endl;
 		this->setDmg(0);
 		this->_hitPoints += 50;
 		this->_energyPoints -= 10;
 		this->active();
-	}
-}
-
-void	ScavTrap::attack(const std::string& target) {
-	if (this->active()) {
-		std::cout << "ScavTrap " << this->_name << " attacks " 
-		<< target << ", causing " << this->_attackDamage 
-		<< " points of damage!" << std::endl;
-		this->_energyPoints--;
 	}
 }
