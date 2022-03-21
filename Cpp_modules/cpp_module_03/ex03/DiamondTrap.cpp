@@ -1,28 +1,27 @@
 #include "DiamondTrap.hpp"
 
-DiamondTrap::DiamondTrap() {
-	std::cout << "DiamondTrap Initialized" << std::endl;
+DiamondTrap::DiamondTrap() : _name("Notton Claptrapiton") {
+	std::cout << "DiamondTrap class Initialized" << std::endl;
 	ClapTrap::_name = _name + "_clap_name";
-	_hitPoints = FlagTrap::_hitPoints;
+	_hitPoints = FragTrap::_hitPoints;
 	_energyPoints = ScavTrap::_energyPoints;
-	_attackDamage = FlagTrap::_attackDamage;
+	_attackDamage = FragTrap::_attackDamage;
 }
 
-DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name), ScavTrap(name), FlagTrap(name) {
-	_name = name;
-	ClapTrap::_name = name.append("_clap_trap");
+DiamondTrap::DiamondTrap(std::string name) : _name(name) {
+	ClapTrap::_name = name + "_clap_trap";
 
-	ScavTrap tmp_scav(name);
-	FlagTrap tmp_flag(name);
+	ScavTrap tmp_scav;
+	FragTrap tmp_flag;
 
 	_hitPoints= tmp_flag.getHp();
 	_energyPoints= tmp_scav.getEnergy();
 	_attackDamage = tmp_flag.getDmg();
-	std::cout << "DiamondTrap Initialized" << std::endl;
+	std::cout << "DiamondTrap class Initialized" << std::endl;
 }
 
 DiamondTrap::DiamondTrap(DiamondTrap const& other) :
-ClapTrap(other), ScavTrap(other), FlagTrap(other) { *this=other;} 
+ClapTrap(other), ScavTrap(other), FragTrap(other) { *this=other;} 
 
 DiamondTrap& DiamondTrap::operator=(DiamondTrap const& other) {
 	ClapTrap::_name = other._name + "_clap_trap";
@@ -34,12 +33,12 @@ DiamondTrap& DiamondTrap::operator=(DiamondTrap const& other) {
 }
 
 DiamondTrap::~DiamondTrap() {
-	std::cout << "DiamondTrap destroyed" << std::endl;
+	std::cout << "DiamondTrap class Destroyed" << std::endl;
 }
 
 void	DiamondTrap::WhoAmI() {
 	if (this->active()) {
-		std::cout << "DiamondTrap " << ClapTrap::_name << " reveals itself as " << this->_name
+		std::cout << "DiamondTrap " << this->_name << " reveals itself as " << ClapTrap::_name
 		<< std::endl;
 		this->_hitPoints -= 20;
 		this->_energyPoints -= 1;

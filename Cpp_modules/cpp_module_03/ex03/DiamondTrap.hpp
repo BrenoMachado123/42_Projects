@@ -2,23 +2,21 @@
 # define DIAMONDTRAP_HPP
 
 # include <iostream>
-# include "ClapTrap.hpp"
-# include "FlagTrap.hpp"
+# include "FragTrap.hpp"
 # include "ScavTrap.hpp"
 
-class DiamondTrap : public ScavTrap, public FlagTrap {
+class DiamondTrap : public ScavTrap, public FragTrap {
+	protected:
+		std::string _name;
+	public:
+		DiamondTrap();
+		DiamondTrap(std::string const name);
+		~DiamondTrap();
+    	DiamondTrap (const DiamondTrap &diamondTrap);
+    	DiamondTrap & operator= (const DiamondTrap &diamondTrap);
 
-private:
-	std::string _name;
-public:
-	DiamondTrap();
-	DiamondTrap(std::string const name);
-	~DiamondTrap();
-    DiamondTrap (const DiamondTrap &diamondTrap);
-    DiamondTrap & operator= (const DiamondTrap &diamondTrap);
-
-	void WhoAmI();
-	void attack(std::string const& target);
+		void WhoAmI();
+		void attack(std::string const& target);
 };
 
 #endif

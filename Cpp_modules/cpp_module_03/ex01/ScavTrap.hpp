@@ -4,9 +4,10 @@
 #include "ClapTrap.hpp"
 
 class ScavTrap: public ClapTrap {
-	private:
-		ScavTrap();
+	protected:
+		bool _outOfGate;
 	public:
+		ScavTrap();
 		ScavTrap(std::string name);
 		ScavTrap(ScavTrap const& other);
 		~ScavTrap();
@@ -14,8 +15,6 @@ class ScavTrap: public ClapTrap {
 
 		void	guardGate();
 		void	attack(const std::string& target);
-
-
 };
 
 #endif

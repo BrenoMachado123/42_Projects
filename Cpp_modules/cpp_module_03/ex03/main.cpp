@@ -1,40 +1,26 @@
-#include "FlagTrap.hpp"
-#include "ScavTrap.hpp"
 #include "DiamondTrap.hpp"
 
 int main() {
 	ClapTrap bot1("BMO");
-	ClapTrap bot2("Norm");
+	FragTrap buddy("Barney");
 	ScavTrap guardian("Goliath");
-	FlagTrap buddy("Astolfo");
-	DiamondTrap TwoFaces("Benjamim");
+	DiamondTrap traitor("CrazyDiamond");
 
-	bot1.setDmg(10);
-	bot2.setHP(30);
-	bot2.setEnergy(2);
-	bot2.setDmg(2);
-	bot1.attack(bot2.getName());
-	bot2.takeDamage(bot1.getDmg());
-	bot2.attack(bot1.getName());
-	bot1.takeDamage(bot2.getDmg());
-	bot1.beRepaired(5);
-	bot1.attack(bot2.getName());
-	bot2.takeDamage(bot1.getDmg());
-	bot2.attack(bot1.getName());
-	bot1.takeDamage(bot2.getDmg());
-	guardian.attack(bot2.getName());
-	bot2.takeDamage(guardian.getDmg());
-	bot2.beRepaired(10);
-	bot1.attack(guardian.getName());
-	guardian.takeDamage(bot1.getDmg());
-	guardian.guardGate();	
-	bot1.attack(guardian.getName());
-	guardian.takeDamage(bot1.getDmg());
+	//buddy turn
 	buddy.highFivesGuys();
+	//bot turn
+	bot1.attack(guardian.getName());
+	guardian.takeDamage(bot1.getDmg());
+	//guardian turn
+	guardian.guardGate();
+	//buddy turn
 	buddy.attack(guardian.getName());
 	guardian.takeDamage(buddy.getDmg());
-	TwoFaces.WhoAmI();
-	TwoFaces.attack(guardian.getName());
-	guardian.takeDamage(TwoFaces.getDmg());
+	//guardian turn
+	guardian.guardGate();
+	//traitor turn
+	traitor.attack(buddy.getName()); //<- it will attack with ScavTrap::attack() and showing it's claptrap name.
+	buddy.takeDamage(traitor.getDmg());
+	traitor.WhoAmI(); //<- will show it's name and it's claptrap name;
 	return (0);
 }

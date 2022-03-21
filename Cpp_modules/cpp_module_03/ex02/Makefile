@@ -6,7 +6,7 @@
 #    By: bmachado <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 15:15:37 by bmachado          #+#    #+#              #
-#    Updated: 2022/03/07 18:32:12 by bmachado         ###   ########.fr        #
+#    Updated: 2022/03/18 15:49:39 by bmachado         ###   ########.fr        #
 #    Updated: 2021/10/11 17:25:10 by bmachado         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
@@ -19,7 +19,7 @@ GREEN='\033[32m'
 GRAY='\033[2;37m'
 STYLE='\033[3m'
 
-NAME = ClapTrap
+NAME = FragTrap
 
 SRC = $(wildcard *.cpp)	
 
