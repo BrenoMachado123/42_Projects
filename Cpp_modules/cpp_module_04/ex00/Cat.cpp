@@ -1,14 +1,28 @@
-Cat::Cat(){}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Cat.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/21 15:01:44 by bmachado          #+#    #+#             */
+/*   Updated: 2022/03/21 16:18:18 by bmachado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "Cat.hpp"
+
+Cat::Cat() { this->_type = "Cat"; }
 
 Cat::Cat(const Cat& other) { *this = other; }
 
 Cat& Cat::operator=(const Cat& other) {
 	if (this != &other) {
-		this->_type = other_type;
+		this->_type = other._type;
 	}
 	return (*this);
 }
 
 Cat::~Cat(){}
 
-void	Cat::makeSound() { std::cout << "MEOW!" << std::endl; }
+void	Cat::makeSound() const { std::cout << "MEOW!" << std::endl; }

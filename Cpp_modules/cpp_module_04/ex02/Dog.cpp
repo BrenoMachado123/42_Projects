@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.cpp                                         :+:      :+:    :+:   */
+/*   Dog.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/21 15:06:35 by bmachado          #+#    #+#             */
-/*   Updated: 2022/03/21 15:55:28 by bmachado         ###   ########.fr       */
+/*   Created: 2022/03/21 15:02:00 by bmachado          #+#    #+#             */
+/*   Updated: 2022/03/21 18:25:14 by bmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animal.hpp"
+#include "Dog.hpp"
 
-Animal::Animal(){}
+Dog::Dog() {
+	std::cout << "Dog class Initialized" << std::endl;
+	this->_brain = new Brain;
+	this->_type = "Dog";
+}
 
-Animal::Animal(const Animal& other) { *this = other; }
+Dog::Dog(const Dog& other) { this->_brain = new Brain; *this = other; }
 
-Animal& Animal::operator=(const Animal& other) {
+Dog& Dog::operator=(const Dog& other) {
 	if (this != &other) {
 		this->_type = other._type;
+		*this->_brain = *other._brain;
 	}
 	return (*this);
 }
 
-Animal::~Animal(){}
+Dog::~Dog(){ std::cout << "Dog class Destroyed" << std::endl; delete this->_brain; }
 
-void	Animal::makeSound() const { std::cout << "BrainzzzZZZ" << std::endl; }
-
-std::string	Animal::getType() const { return(this->_type); }
-
+void	Dog::makeSound() const { std::cout << "Oof!" << std::endl; }
