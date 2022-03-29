@@ -6,7 +6,7 @@
 /*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:03:28 by bmachado          #+#    #+#             */
-/*   Updated: 2022/03/21 15:58:48 by bmachado         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:37:27 by bmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int main() {
 		const Animal* i = new Cat();
 
 		std::cout << "=== RIGHT ANIMAL TEST ===" << std::endl;
-		std::cout << j->getType() << " " << std::endl; 
-		std::cout << i->getType() << " " << std::endl; 
-		i->makeSound();
-		j->makeSound();
-		meta->makeSound();
+		std::cout << j->getType() << " " << std::endl; //dog
+		std::cout << i->getType() << " " << std::endl; //cat
+		i->makeSound(); // cat sound
+		j->makeSound(); // dog sound
+		meta->makeSound(); //animal sound
 
 		delete meta; delete j; delete i;
 	}
@@ -39,11 +39,11 @@ int main() {
 		const WrongAnimal* i = new WrongCat();
 
 		std::cout << "=== WRONG ANIMAL TEST === " << std::endl;
-		std::cout << j->getType() << " " << std::endl; 
-		std::cout << i->getType() << " " << std::endl; 
-		i->makeSound();
-		j->makeSound();
-		meta->makeSound();
+		std::cout << j->getType() << " " << std::endl; //dog
+		std::cout << i->getType() << " " << std::endl; //cat
+		i->makeSound(); //amimal sound
+		j->makeSound(); //animal sound
+		meta->makeSound(); // animal sound
 
 		delete meta; delete j; delete i;
 	}

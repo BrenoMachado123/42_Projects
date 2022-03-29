@@ -6,7 +6,7 @@
 /*   By: bmachado <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:03:28 by bmachado          #+#    #+#             */
-/*   Updated: 2022/03/21 18:22:23 by bmachado         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:51:46 by bmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #define N 10
 
 int main() {
+	{
+		Dog basic;
+		Dog tmp = basic;
+	}
 	{
 		std::cout << " == Declaring test == " << std::endl;
 		//create a 'dog' will call 'dog' class and after call 'brain' class; 
