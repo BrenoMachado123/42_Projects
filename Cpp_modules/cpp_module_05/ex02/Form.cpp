@@ -85,3 +85,12 @@ bool	Form::beSigned(Bureaucrat& bureau) {
 	else if  (bureau.getGrade() <= this->_gradeToSign) { this->_signed = true; } 
 	return (this->_signed);
 }
+
+void	Form::start() const { return ; };
+
+void	Form::execute(Bureaucrat const& executor) const {
+	if (executor.getGrade() > 150) { throw GradeTooLowException(); }
+	else if (executor.getGrade() < 1) { throw GradeTooHighException(); } 
+	else if  (executor.getGrade() <= this->_gradeToSign && executor.getGrade() <= this->_gradeToExec) { this->start(); }  
+
+}

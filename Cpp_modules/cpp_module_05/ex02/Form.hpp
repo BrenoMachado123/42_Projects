@@ -16,7 +16,7 @@ class Form {
 		Form(const std::string& name, const int gradeSign, const int gradeExec);
 		Form(const Form& other);
 		Form& operator=(const Form& other);
-		~Form();
+		virtual ~Form();
 
 		int setGradeToSign(const int grade);
 		int setGradeToExec(const int grade);
@@ -37,6 +37,9 @@ class Form {
 			public:
 				const char* what() const throw();
 		};
+
+		void		execute(const Bureaucrat& executor) const;
+		virtual void start() const = 0;
 };
 
 std::ostream& operator<<(std::ostream& out, const Form& obj);

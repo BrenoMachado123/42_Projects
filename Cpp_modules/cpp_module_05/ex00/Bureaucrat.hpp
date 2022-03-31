@@ -6,20 +6,21 @@
 
 class Bureaucrat {
 	private:
-		std::string			_name;
-		int					_grade;
+		const std::string			_name;
+		unsigned int				_grade;
 	public:
 		Bureaucrat();
 		Bureaucrat(std::string const& name,  int grade);
 		Bureaucrat(const Bureaucrat& other);
+		Bureaucrat&		setGrade( int grade);
 		Bureaucrat& operator=(const Bureaucrat& other);
 		Bureaucrat operator--(int);
 		Bureaucrat operator++(int);
 		~Bureaucrat();
 
+
 		std::string		getName() const;
 		int				getGrade() const;
-		void			setGrade( int grade);
 
 		class	GradeTooHighException : public std::exception {
 			public:
