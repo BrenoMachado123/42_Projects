@@ -39,5 +39,5 @@ void	Karen::complain(std::string level) {
 		"DEBUG", "INFO", "WARNING", "ERROR"
 	};
 	while (i < 4 && comp_levels[i] != level) { i++; }
-	try {(this->*karen_cmds[i])();} catch(...){return ;}
+	if (i != 4) { (this->*karen_cmds[i])(); }
 }
