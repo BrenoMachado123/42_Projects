@@ -5,7 +5,6 @@
 int main() {
 	Bureaucrat breno("Breno", 1);
 	ShrubberyCreationForm test;
-
-	test.start();
+	test.execute(breno);
 	return (0);
 }
