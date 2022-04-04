@@ -14,12 +14,12 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other) {
 }
 
 Bureaucrat Bureaucrat::operator--(int) {
-	this->_grade -= 1;
+	this->_grade += 1;
 	return (setGrade(this->_grade));
 }
 
 Bureaucrat Bureaucrat::operator++(int) {
-	this->_grade += 1;
+	this->_grade -= 1;
 	return (setGrade(this->_grade));
 }
 
