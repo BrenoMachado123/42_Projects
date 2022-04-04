@@ -20,20 +20,16 @@ int main() {
 		std::cout << form;
 	}
 	{
-		Bureaucrat bureau("Bob, the All-Loser", 20129);
-		Form form("The whatever medium rest of days's paperwork", 100, 100);
-		std::cout << bureau;
-		std::cout << form;
-		bureau.signForm(form);
-		std::cout << form;
+		try {
+			Bureaucrat bureau("Bob, the All-Loser", 150);
+			Form form("The whatever medium rest of days's paperwork", -1, 100);
+		} catch (std::exception& e) { std::cout << e.what() << std::endl; }
 	}
 	{
-		Bureaucrat bureau("Dob, the other All-Loser", -1);
-		Form form("The whatever medium rest of days's paperwork", 100, 100);
-		std::cout << bureau;
-		std::cout << form;
-		bureau.signForm(form);
-		std::cout << form;
+		try {
+			Bureaucrat bureau("Dob, the other All-Loser", 150);
+			Form form("The whatever medium rest of days's paperwork", 100, 3213112);
+		} catch (std::exception& e) { std::cout << e.what() << std::endl; }
 	}
 	return (0);
 }

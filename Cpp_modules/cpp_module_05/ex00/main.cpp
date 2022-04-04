@@ -1,9 +1,19 @@
 #include "Bureaucrat.hpp"
 
 int main() {
-	Bureaucrat bureau1("Breno", 1);
-	for (int i = 0; i < 150; i++) {std::cout << bureau1; bureau1++; }
-	std::cout << "*********************************************************" << std::endl;
-	for (int i = 150; i >= 0; i--) {std::cout << bureau1; bureau1--; }
+	{
+		Bureaucrat bureau1("Breno", 1);
+		std::cout << bureau1;
+	}
+	{
+		try {
+			Bureaucrat bureau1("Breno", 723897139);
+		} catch (std::exception& e) { std::cout << e.what() << std::endl; }
+	}
+	{
+		try {
+			Bureaucrat bureau1("Breno", -313);
+		} catch (std::exception& e) { std::cout << e.what() << std::endl; }
+	}
 	return (0);
 }

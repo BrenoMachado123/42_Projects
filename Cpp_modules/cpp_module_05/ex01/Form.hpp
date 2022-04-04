@@ -3,7 +3,7 @@
 
 # include "Bureaucrat.hpp"
 
-class Bureaucrat;
+class	Bureaucrat;
 
 class Form {
 	private:
@@ -16,7 +16,7 @@ class Form {
 		Form(const std::string& name, const int gradeSign, const int gradeExec);
 		Form(const Form& other);
 		Form& operator=(const Form& other);
-		~Form();
+		virtual ~Form();
 
 		int setGradeToSign(const int grade);
 		int setGradeToExec(const int grade);

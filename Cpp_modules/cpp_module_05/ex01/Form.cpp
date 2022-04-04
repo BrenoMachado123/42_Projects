@@ -29,6 +29,7 @@ Form::Form(const Form& other) :
 std::string Form::getName() const { return (this->_name); }
 int Form::getGradeToSign() const { return (this->_gradeToSign); } 
 int Form::getGradeToExec() const { return (this->_gradeToExec); } 
+
 std::string Form::getSign() const { 
 	if (this->_signed) { return ("Yes"); }
 	return ("No");
@@ -48,40 +49,28 @@ std::ostream& operator<<(std::ostream& out, const Form& obj) {
 Form::~Form() {}
 
 const char* Form::GradeTooHighException::what() const throw() {
-	return "<error: Form grade too high>";
+	return "form grade is too high";
 }
 
 const char* Form::GradeTooLowException::what() const throw() {
-	return "<error: Form grade too low>";
+	return "form grade is too low";
 }
 
 int Form::setGradeToSign(const int grade) {
-	try {
-		if (grade < 1) { throw GradeTooHighException(); }
-		else if (grade > 150) { throw  GradeTooLowException(); }
-	}
-	catch (std::exception& e) {
-		std::cerr << e.what() << std::endl;
-	}
+	if (grade < 1) { throw GradeTooHighException(); }
+	else if (grade > 150) { throw  GradeTooLowException(); }
 	(int&)this->_gradeToSign = grade;
 	return (this->_gradeToSign);
 }
 
 int Form::setGradeToExec(const int grade) {
-	try {
-		if (grade < 1) { throw GradeTooHighException(); }
-		else if (grade > 150) { throw  GradeTooLowException(); }
-	}
-	catch (std::exception& e) {
-		std::cerr << e.what() << std::endl;
-	}
+	if (grade < 1) { throw GradeTooHighException(); }
+	else if (grade > 150) { throw GradeTooLowException(); }
 	(int&)this->_gradeToExec = grade; 
 	return (this->_gradeToExec);
 }
 
 bool	Form::beSigned(Bureaucrat& bureau) {
-	if (bureau.getGrade() > 150) { throw GradeTooLowException(); }
-	else if (bureau.getGrade() < 1) { throw GradeTooHighException(); } 
-	else if  (bureau.getGrade() <= this->_gradeToSign) { this->_signed = true; } 
+	if  (bureau.getGrade() <= this->_gradeToSign) { this->_signed = true; }
 	return (this->_signed);
 }

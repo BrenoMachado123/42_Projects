@@ -31,23 +31,18 @@ std::string		Bureaucrat::getName() const { return(this->_name); }
 int	Bureaucrat::getGrade() const { return(this->_grade); }
 
 Bureaucrat& Bureaucrat::setGrade(int grade) {
-	try {
-		if (grade < 1) { throw GradeTooHighException(); }
-		else if (grade > 150) { throw GradeTooLowException(); }
-	} 
-	catch (std::exception& e) {
-		std::cerr << e.what() << std::endl;	
-	}
+	if (grade < 1) { throw GradeTooHighException(); }
+	else if (grade > 150) { throw GradeTooLowException(); }
 	this->_grade = grade;
 	return (*this);
 }
 
 const char* Bureaucrat::GradeTooHighException::what() const throw() { 
-	return "<error: Grade too high>";
+	return "grade too high";
 }
 
 const char* Bureaucrat::GradeTooLowException::what() const throw() { 
-	return "<error: Grade too low>";
+	return "grade too low";
 }
 
 std::ostream& operator<<(std::ostream& out, const Bureaucrat& obj) {
