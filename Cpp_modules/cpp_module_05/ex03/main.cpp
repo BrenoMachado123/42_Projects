@@ -13,7 +13,7 @@ int main() {
 
 		breno.signForm(test);
 		breno.executeForm(test);
-		std::cout << "-----------------------------" << std:: endl;
+		std::cout << "----------------------------------------" << std:: endl;
 		std::cout << std::endl;
 	}
 	{
@@ -23,7 +23,7 @@ int main() {
 
 		breno.signForm(test);
 		breno.executeForm(test);
-		std::cout << "-----------------------------" << std:: endl;
+		std::cout << "----------------------------------------" << std:: endl;
 		std::cout << std::endl;
 	}
 	{
@@ -33,7 +33,7 @@ int main() {
 
 		breno.signForm(test);
 		breno.executeForm(test);
-		std::cout << "-----------------------------" << std:: endl;
+		std::cout << "----------------------------------------" << std:: endl;
 		std::cout << std::endl;
 
 	}
@@ -42,14 +42,14 @@ int main() {
 		Intern Jimmy;
 		Form* Formulary;
 
-		Formulary = Jimmy.makeForm("robotomy request", "Bender");
-
-		Bureaucrat breno("Breno", 1);
-		breno.signForm(*Formulary);
-		breno.executeForm(*Formulary);
-
-		delete Formulary;
-		std::cout << "-----------------------------" << std:: endl;
+		Formulary = Jimmy.makeForm("crash request", "Bender");
+		if (Formulary) {
+			Bureaucrat breno("Breno", 1);
+			breno.signForm(*Formulary);
+			breno.executeForm(*Formulary);
+			delete Formulary;
+		}
+		std::cout << "----------------------------------------" << std:: endl;
 	}
 	return (0);
 }
