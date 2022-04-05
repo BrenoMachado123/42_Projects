@@ -1,25 +1,28 @@
 #ifndef DATATYPE_HPP
 # define DATATYPE_HPP
 
+#include <iostream>
+#include <iomanip>
+#include <ctype.h>
+#include <cstdlib>
+#include <string>
 
 class Datatype {
 	private:
-		//the string that will be converted:
 		std::string _cstring;
+		double		_value;
+		int			_parsingValue;
 	public:
 		Datatype();
-		Datatype(const Convert& other);
-		Datatype& operator=(const Convert& other);
+		Datatype(char* str);
+		Datatype(const Datatype& other);
+		Datatype& operator=(const Datatype& other);
 		~Datatype();
 
-		//conversions to implement:
-		void	ConvertChar;
-		void	ConvertInt;
-		void	ConvertDouble;
-		void	ConvertFloat;
-}
-
-
-
+		void	convertChar();
+		void	convertInt();
+		void	convertDouble();
+		void	convertFloat();
+};
 
 #endif
