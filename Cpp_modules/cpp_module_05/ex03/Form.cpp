@@ -82,8 +82,6 @@ void	Form::beSigned(Bureaucrat& bureau) {
 	}
 }
 
-void	Form::start() const {};
-
 void	Form::execute(Bureaucrat const& executor) const {
 	int grade = executor.getGrade();
 	if (!this->_signed) { throw FormNotSignedException(); }
