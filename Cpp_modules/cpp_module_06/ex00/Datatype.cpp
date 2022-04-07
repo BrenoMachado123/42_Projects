@@ -5,7 +5,9 @@ Datatype::Datatype() : _cstring(NULL) {}
 static bool isNumber(std::string cstring) {
 	int size = cstring.length();
 	for (int i = 0; i < size; i++) {
-		if (!isdigit(cstring[i]) && cstring[i] != '-' && cstring[i] != '+') { return (false); }
+		if ((!isdigit(cstring[i]) && cstring[i] != '-' && cstring[i] != '+')) { 
+			return (false);
+		}
 	}
 	return (true);
 } // a static function just to check if the string is a number;
@@ -30,11 +32,9 @@ Datatype::Datatype(char* str) {
 	else if (_cstring.length() > 1 && isNumber(_cstring)) { _value = std::stol(_cstring); return ; }
 
 	//(float) and (double) cases:
-	std::string::iterator itr = _cstring.end() - 1;
-	//obs: the subject doesn't says anything about 'inf' without signals, so will handle as a invalid argument until otherwise!!
-	if ((*itr == 'f' || _cstring.find(".") != std::string::npos) && _cstring.find("inf") == std::string::npos) {
-		char *endptr;
-		double convertedType = strtod(str, &endptr);	
+	char *endptr;
+	double convertedType = strtod(str, &endptr);	
+	if (*endptr == 'f' || _cstring.find(".") != std::string::npos) {
 		_value = convertedType;
 		return ;
 	}
