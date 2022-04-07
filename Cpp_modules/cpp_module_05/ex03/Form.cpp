@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& out, const Form& obj) {
 	out << "Form: " << obj.getName() << std::endl;
 	out << "Grade to sign: " << obj.getGradeToSign() << std::endl;
 	out << "Grade to execute: " << obj.getGradeToExec() << std::endl;
-	out << "Form: " << obj.getSign() << std::endl;
+	out << "Signed: " << obj.getSign() << std::endl;
 	out << "-----------------------------------" << std::endl;
 	return (out);
 }
@@ -74,9 +74,12 @@ int Form::setGradeToExec(const int grade) {
 	return (this->_gradeToExec);
 }
 
-bool	Form::beSigned(Bureaucrat& bureau) {
-	if  (bureau.getGrade() <= this->_gradeToSign) { this->_signed = true; }
-	return (this->_signed);
+void	Form::beSigned(Bureaucrat& bureau) {
+	if (bureau.getGrade() <= this->_gradeToSign) {
+		this->_signed = true; 
+	} else {
+		throw GradeTooLowException();
+	}
 }
 
 void	Form::start() const {};

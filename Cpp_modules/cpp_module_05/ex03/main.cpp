@@ -9,7 +9,7 @@ int main() {
 	{
 		std::cout << "------------- TEST 1 ----------------" << std:: endl;
 		Bureaucrat breno("Breno", 1);
-		PresidentialPardonForm test("House");
+		PresidentialPardonForm test("Real Evil Guy");
 
 		breno.signForm(test);
 		breno.executeForm(test);
@@ -19,7 +19,7 @@ int main() {
 	{
 		std::cout << "------------- TEST 2 ----------------" << std:: endl;
 		Bureaucrat breno("Breno", 150);
-		ShrubberyCreationForm test("Evil guy");
+		ShrubberyCreationForm test("House");
 
 		breno.signForm(test);
 		breno.executeForm(test);

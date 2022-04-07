@@ -8,7 +8,7 @@ int main() {
 	{
 		std::cout << "------------- TEST 1 ----------------" << std:: endl;
 		Bureaucrat breno("Breno", 1);
-		PresidentialPardonForm test("House");
+		PresidentialPardonForm test("Evil Guy");
 
 		breno.signForm(test);
 		breno.executeForm(test);
@@ -18,7 +18,7 @@ int main() {
 	{
 		std::cout << "------------- TEST 2 ----------------" << std:: endl;
 		Bureaucrat breno("Breno", 150);
-		ShrubberyCreationForm test("Evil City");
+		ShrubberyCreationForm test("House");
 
 		breno.signForm(test);
 		breno.executeForm(test);
@@ -29,7 +29,7 @@ int main() {
 	{
 		std::cout << "------------- TEST 3 ----------------" << std:: endl;
 		Bureaucrat breno("Breno", 1);
-		RobotomyRequestForm test("Factory");
+		RobotomyRequestForm test("Chiaki");
 
 		breno.signForm(test);
 		breno.executeForm(test);

@@ -6,7 +6,7 @@ GREEN='\033[32m'
 GRAY='\033[2;37m'
 STYLE='\033[3m'
 
-NAME = Form_bureaucrat
+NAME = internship
 
 SRC = $(wildcard *.cpp)	
 

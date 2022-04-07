@@ -26,7 +26,7 @@ class Form {
 		int				getGradeToSign() const;
 		int 			getGradeToExec() const;
 
-		bool	beSigned(Bureaucrat& bureau);
+		void			beSigned(Bureaucrat& bureau);
 
 		class GradeTooHighException : public std::exception {
 			public:
