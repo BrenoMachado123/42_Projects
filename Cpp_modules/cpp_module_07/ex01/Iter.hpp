@@ -5,21 +5,21 @@
 
 class Iter {
 	private:
-		int _var;
+		int _element;
 	public:
-		Iter() : _var(0) {}
+		Iter() : _element(0) {}
 		Iter(const Iter& other) { *this = other; }
 		Iter & operator=(const Iter& other) {
-			if (this != &other ) { this->_var = other._var; }
+			if (this != &other ) { this->_element = other._element; }
 			return *this;
 		}
 		~Iter() {}
 
-		int getVar() const { return (this->_var); }
+		int getElement_() const { return (this->_element); }
 };
 
 std::ostream& operator<<(std::ostream& out, const Iter& obj) { 
-	out << obj.getVar(); 
+	out << obj.getElement_(); 
 	return out;
 }
 
@@ -30,7 +30,7 @@ void	iter(T* array, int size, void (*func)(T&)) {
 }
 
 template<typename T>
-void	printArray(T& anything) {
+void	printElement(T& anything) {
 	std::cout << anything << ".";
 }
 
