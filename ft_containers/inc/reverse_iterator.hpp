@@ -4,6 +4,8 @@
 #include <iostream>
 #include "iterator_traits.hpp"
 
+//https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_iterator.h.html#std::reverse_iterator::current
+
 namespace ft {
 	template<class Iterator>
 	class reverse_iterator {
@@ -17,7 +19,7 @@ namespace ft {
 			typedef typename traits_type::reference				reference;
 			typedef typename traits_type::iterator_category		iterator_category;
 
-			reverse_iterator() : _ptr(pointer()) {}
+			reverse_iterator() : _ptr() {}
 			explicit reverse_iterator(iterator_type ptr) : _ptr(ptr) {}
 			reverse_iterator(const reverse_iterator& other) { *this = other; }
 			reverse_iterator& operator=(const reverse_iterator& other) {
@@ -26,45 +28,47 @@ namespace ft {
 				return (*this);
 			}
 			template <class Iter>
-			reverse_iterator (const reverse_iterator<Iter> & rev_it) : 
-				_ptr(rev_it.base() - 1) {};
+			reverse_iterator (const reverse_iterator<Iter> & other) : 
+				_ptr(other.base()) {};
 	
 			~reverse_iterator() {};
 
-			iterator_type base() const {
-				return (_ptr + 1);
-			}
+			iterator_type base() const { return (_ptr); }
 
 			reverse_iterator operator++() {
-				_ptr--; 
+				--_ptr; 
 				return (*this);
 			}
-			reverse_iterator operator++(int) { 
-				reverse_iterator tmp(*this); 
-				operator++();
+			reverse_iterator operator++(int) {
+				reverse_iterator tmp = *this; 
+				--_ptr;
 				return (tmp);
 			}
 
 			reverse_iterator operator--() {
-				_ptr++; 
+				++_ptr; 
 				return (*this);
 			}
 			reverse_iterator operator--(int) { 
-				reverse_iterator tmp(*this); 
-				operator--();
+				reverse_iterator tmp = *this;
+				++_ptr;
 				return (tmp);
 			}
 
 			pointer operator->() { return (_ptr); }
 			reference	operator[](size_t n) { return base()[-n-1];}
-			reference operator*() { return *_ptr; }
+			reference operator*() const {
+				iterator_type tmp = _ptr;
+				return *--tmp;
+			}
 			reference	operator[](size_t n) const { return base()[-n-1]; }
 			bool operator==(const reverse_iterator& other) { return (this->_ptr == other._ptr); }
 			bool operator!=(const reverse_iterator& other) { return (this->_ptr != other._ptr); }
 					
 		private:
-			pointer _ptr;
+			iterator_type _ptr;
 	};
 }
 
 #endif
+

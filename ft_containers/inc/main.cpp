@@ -12,7 +12,7 @@ void	printVector(const ft::vector<T>& vector) {
 	std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl; 
 }
 
-/*static void _testReserve() {
+ void _testReserve() {
 	ft::vector<int>::size_type sz;
 
   	ft::vector<int> foo;
@@ -38,7 +38,7 @@ void	printVector(const ft::vector<T>& vector) {
   }
 }
 
-static void	testResize() {
+ void	testResize() {
 	ft::vector<int> myvector;
 	// set some initial content:
 	for (int i=1;i<10;i++) myvector.push_back(i);
@@ -48,14 +48,14 @@ static void	testResize() {
   	myvector.resize(12);
 
   	std::cout << "myvector contains:";
-  	for (int i=0;i<myvector.size();i++)
+  	for (size_t i=0;i<myvector.size();i++)
     	std::cout << ' ' << myvector[i];
   	std::cout << '\n';
 	std::cout << "capacity : " << myvector.capacity() << std::endl;
 	std::cout << "size : " << myvector.size() << std::endl;
 }
 
-static void testGetAllocator() {
+ void testGetAllocator() {
 	ft::vector<int> myvector;
   	int * p;
   	unsigned int i;
@@ -75,7 +75,7 @@ static void testGetAllocator() {
   	myvector.get_allocator().deallocate(p,5);
 }
 
-static void testAt() {
+ void testAt() {
 
 	ft::vector<int> myvector (10);   // 10 zero-initialized ints
 
@@ -84,71 +84,49 @@ static void testAt() {
     	myvector.at(i)=i;
 
   	std::cout << "myvector contains:";
-  	for (unsigned i=0; i<myvector.size(); i++)
+  	for (size_t i=0; i<myvector.size(); i++)
     	std::cout << ' ' << myvector.at(i);
   	std::cout << '\n';
-}*/
-
-static void testIterator() {
-	ft::vector<int> a;
-	std::vector<int> dummy;
-	for (size_t i = 0; i < 10; i++) {
-		a.push_back(i);
-		dummy.push_back(i);
-	}
-
-	//some bugs to fix in reverse iterator;
-	std::vector<int>::reverse_iterator r_start = dummy.rbegin();
-	std::vector<int>::reverse_iterator r_end = dummy.rend();
-	ft::vector<int>::reverse_iterator start = a.rbegin();
-	ft::vector<int>::reverse_iterator end = a.rend();
-
-
-	while (end != start) {
-		std::cout << *end << std::endl;
-		end--;
-	}
-	std::cout << std::endl;
-	while (r_end != r_start) {
-		std::cout << *r_end << std::endl;
-		r_end--;
-	}
-
 }
 
+void	testFrontBack() {
+	ft::vector<int> myvector;
+	myvector.push_back(10);
+
+	std::cout << myvector.back() << std::endl;
+
+	while (myvector.back() != 1) {
+		myvector.push_back ( myvector.back() -1 );
+	}
+	std::cout << "myvector contains:";
+	for (unsigned i=0; i < myvector.size() ; i++)
+		std::cout << ' ' << myvector[i];
+	std::cout << std::endl;
+	std::cout << myvector.front() - myvector.back() << std::endl;
+}
+
+void	testAssign() {
+	ft::vector<int> first;
+  	ft::vector<int> second;
+  	ft::vector<int> third;
+
+  	first.assign (7,100);             // 7 ints with a value of 100
+
+  	ft::vector<int>::iterator it;
+	
+	it = first.begin() + 1;
+
+  	second.assign (it,first.end()-1); // the 5 central values of first
+
+  	int myints[] = {1776,7,4};
+  	third.assign (myints,myints+3);   // assigning from array.
+
+  	std::cout << "Size of first: " << int (first.size()) << '\n';
+  	std::cout << "Size of second: " << int (second.size()) << '\n';
+  	std::cout << "Size of third: " << int (third.size()) << '\n';
+ }
+
 int main() {
-	testIterator();
-	//_testReserve();
-	//testResize();
-	//testGetAllocator();
-	/*try {
-		std::vector<std::string> a;
-		std::cout << a.capacity() << std::endl;
-		std::cout << a.size() << std::endl;
-  		ft::vector<std::string> b;
-		std::cout << b.capacity() << std::endl;
-		std::cout << b.size() << std::endl;
-		if (b.empty())
-			std::cout << "empty for now" << std::endl;
-		for (int i = 0; i < 3; i++) {
-			b.push_back("Hello");
-			b.push_back("World");
-			b.push_back("!!!!");
-		}
-		b.push_back("-----");
-		b.pop_back();
-		//b.clear();
-		printVector(b);
-		b.push_back("--1--");
-		b.push_back("--2--");
-		b.push_back("--3--");
-		//printVector(b);
-		ft::vector<std::string> c = b; 
-		printVector(c);
-		if (!c.empty())
-			std::cout << "not empty anymore" << std::endl;
-	} catch(std::length_error& a) {
-		std::cout << a.what() << std::endl;
-	}*/
+	// insert the functions test
 	return 0;
 }
