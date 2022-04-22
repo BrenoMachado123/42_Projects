@@ -126,7 +126,81 @@ void	testAssign() {
   	std::cout << "Size of third: " << int (third.size()) << '\n';
  }
 
+void	testErase() {
+	ft::vector<int> myvector;
+	std::vector<int> stdvector;
+
+ 	// set some values (from 1 to 10)
+	for (int i=1; i<=10; i++) {
+		myvector.push_back(i);
+		stdvector.push_back(i);
+
+	}
+
+  	// erase the 6th element
+  	myvector.erase (myvector.begin()+5);
+	stdvector.erase(stdvector.begin()+5);
+
+  	// erase the first 3 elements:
+  	myvector.erase (myvector.begin(),myvector.begin()+3);
+  	stdvector.erase (stdvector.begin(),stdvector.begin()+3);
+
+  	std::cout << "std::vector contains:";
+  	for (unsigned i=0; i<stdvector.size(); ++i) {
+		std::cout << ' ' << stdvector[i];
+ 	}
+  	std::cout << '\n';
+  	std::cout << "ft::vector contains:";
+  	for (unsigned i=0; i<myvector.size(); ++i) {
+		std::cout << ' ' << myvector[i];
+ 	}
+	std::cout << '\n';
+}
+
+void	testSwap() {
+	ft::vector<int> foo (3,100);   // three ints with a value of 100
+	ft::vector<int> bar (5,200);   // five ints with a value of 200
+
+	std::cout << "first foo size : " << foo.size() <<std::endl;
+	int *ptr = foo.get_allocator().allocate(foo.size());
+	std::cout << "first foo allocator : " << ptr << std::endl;
+	std::cout << "first foo capacity : " << foo.capacity() << std::endl;
+
+	std::cout << "----  -----  ----" << std::endl;
+
+	std::cout << "first bar size : " << bar.size() <<std::endl;
+	int *ptr1 = bar.get_allocator().allocate(bar.size());
+	std::cout << "first bar allocator : " << ptr1 << std::endl;
+	std::cout << "first bar capacity : " << bar.capacity() << std::endl;
+	
+	std::cout << "----  -----  ----" << std::endl;
+	
+	foo.swap(bar);
+	std::cout << "foo contains:";
+	for (unsigned i=0; i<foo.size(); i++)
+		std::cout << ' ' << foo[i];
+	std::cout << '\n';
+	
+	std::cout << "bar contains:";
+	for (unsigned i=0; i<bar.size(); i++)
+		std::cout << ' ' << bar[i];
+	std::cout << '\n';
+
+	std::cout << "second foo size: " << foo.size() <<std::endl;
+	int *ptr2 = foo.get_allocator().allocate(foo.size());
+	std::cout << "second foo allocator : " << ptr2 << std::endl;
+	std::cout << "second foo capacity : " << foo.capacity() << std::endl;
+
+	std::cout << "----  -----  ----" << std::endl;
+
+	std::cout << "second bar size : " << bar.size() <<std::endl;
+	int *ptr3 = bar.get_allocator().allocate(bar.size());
+	std::cout << "second bar allocator : " << ptr3 << std::endl;
+	std::cout << "second bar capacity : " << bar.capacity() << std::endl;
+}
+
 int main() {
+	testSwap();
 	// insert the functions test
 	return 0;
 }

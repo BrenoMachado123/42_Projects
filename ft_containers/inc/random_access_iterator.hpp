@@ -51,12 +51,18 @@ namespace ft {
 				return (tmp);
 			}
 
-			pointer operator->() { return (_ptr); }
-			reference	operator[](size_t index) { return *(_ptr[index]); }
-			reference operator*() const { return *_ptr;}
-			reference	operator[](size_t index) const { return *(_ptr[index]); }
-			
-			
+			pointer operator->()
+			{ return (_ptr); }
+
+			reference	operator[](size_t index)
+			{ return *(_ptr[index]); }
+	
+			reference operator*() const
+			{ return *_ptr;}
+
+			reference	operator[](size_t index) const
+			{ return *(_ptr[index]); }
+		
 			bool operator==(const random_access_iterator& other)
 			{ return (this->_ptr == other._ptr); }
 			
