@@ -29,7 +29,8 @@ namespace ft {
 			}
 			~random_access_iterator() {}
 
-			iterator_type base() const { return _ptr; };
+			iterator_type base() const
+			{ return _ptr; };
 
 			random_access_iterator operator++() {
 				_ptr++; 

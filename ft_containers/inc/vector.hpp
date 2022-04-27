@@ -161,29 +161,54 @@ namespace ft {
 					x = tmp;
 				}
 
-				//insert single element
-				
-				/*Plan -> Reallocate when supasses the capacity
-				 * insert the new element in their position
-				 * rellocate the elements after the new position*/
-				iterator insert (iterator position, const value_type& val) {
+				// this one is really bad
+				iterator insert (iterator position, const value_type& val = value_type() ) {
 					size_type pos = _getRange(begin(), position);
-					if (_size + 1 > _capacity) {
-						_reAlloc(_size + 1);
-						//toDo()
+					if (pos > _size)
+						throw std::bad_alloc();
+					bool swap = false;
+					if (_size + 1 > _capacity)
+						_reAlloc(_size * 2);
+					push_back(value_type());
+					value_type save = *(_buff + pos);
+					value_type save_next = *(_buff + pos + 1);
+					_setValue(_buff + pos, val);
+					for (size_type i = pos + 1; i < size() + 1; i++) {
+						value_type save_tmp = *(_buff + i);
+						if (!swap)
+						{ _setValue(_buff + i, save); swap = true; }
+						else
+						{ _setValue(_buff + i, save_next); save_next = save_tmp; }
 					}
+					return (position);
 				}
-							
+
+				//but improving this one, I can improve the function above
+				//it's almost done but the output is giving me two more empty spaces
+				void insert (iterator position, size_type n, const value_type& val = value_type()) {
+					size_type pos = _getRange(begin(), position);
+					if (pos  > _size)
+						throw std::bad_alloc();
+					if (_size + n > _capacity)
+						_reAlloc(_size * 2);
+					for (size_type i = 0; i <= n; i++)
+						push_back(value_type());
+					pointer tmp_buff = &_buff[pos];
+					for (size_type i = pos; i < n; i++)
+						_setValue(_buff + i, val);
+					size_type idx = 0;
+					for (size_type i = pos + n; i < size(); i++)
+					{ _setValue(_buff + i, *(tmp_buff + idx)); idx++; }
+				}
+			
 
 				//operators
 
-				const_reference operator[](size_type index) const {
-					return reference (_buff[index]);
-				}
+				const_reference operator[](size_type index) const
+				{ return reference (_buff[index]); }
 
-				reference operator[](size_type index) {
-					return reference (_buff[index]);
-				}
+				reference operator[](size_type index)
+				{ return reference (_buff[index]); }
 
 				allocator_type get_allocator() const {
 					allocator_type copy_alloc;
@@ -197,9 +222,8 @@ namespace ft {
 						_size = other.size();
 						_capacity = other.capacity();	
 						_buff = _alloc.allocate(_size);
-						for (size_type i = 0; i < _size; i++) {
+						for (size_type i = 0; i < _size; i++)
 							_alloc.construct(_buff + i, other.at(i));
-						}
 					}
 					return *this;
 				}
@@ -270,6 +294,7 @@ namespace ft {
 					_buff = newPtr;
 					_capacity = newCapacity;
 				}
+
 				//function that will reallocate the vector size in resize;
 				void	_reSize(size_type n, value_type val = value_type()) {
 					value_type element = 0;		
@@ -282,11 +307,17 @@ namespace ft {
 					if (n > _capacity)
 						_reAlloc(n * 2);
 				}
+
+				//set a new value to a element in vector
+				void	_setValue(pointer element, value_type val = value_type() ) {
+					_alloc.destroy(element);
+					_alloc.construct(element, val);
+				}
+
 				//function that will fill the blank spaces left by erase function;
 				void	_fillErased(size_type start, size_type end, value_type fill = value_type()) {
-					if (fill) {
-						_alloc.destroy(_buff + start);
-						_alloc.construct(_buff + start, fill);
+					if (fill != value_type()) {
+						_setValue(_buff + start, fill);
 						return ;
 					}
 					for (size_type i = start; i < end; i++) {
@@ -296,6 +327,7 @@ namespace ft {
 					}
 				}
 				
+
 				//get a range between two iterators
 				difference_type _getRange(iterator first, iterator last)
 				{ return (last - first); }
@@ -306,38 +338,37 @@ namespace ft {
 				size_type		_capacity;
 				pointer			_buff;
 	};
-}
 
 template <class T, class Alloc>
-	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
 	{ x.swap(y); }
 
 template <class T, class Alloc>
-	bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size())
 			return (ft::equal(lhs.begin(), lhs.end()), rhs.begin());
 		return (false);
 	}
 
 template <class T, class Alloc>
-	bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{ return (!(lhs == rhs)); }
 
 template <class T, class Alloc>
-	bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 
 template <class T, class Alloc>
-	bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{ return (!(lhs < rhs)); }
 	
 template <class T, class Alloc>
-	bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{ return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
 
 template <class T, class Alloc>
-	bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{ return (!(lhs > rhs)); }
-
+}
 
 #endif

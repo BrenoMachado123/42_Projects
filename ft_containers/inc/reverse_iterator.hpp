@@ -33,7 +33,8 @@ namespace ft {
 	
 			~reverse_iterator() {};
 
-			iterator_type base() const { return (_ptr); }
+			iterator_type base() const
+			{ return (_ptr); }
 
 			reverse_iterator operator++() {
 				--_ptr; 
@@ -55,15 +56,23 @@ namespace ft {
 				return (tmp);
 			}
 
-			pointer operator->() { return (_ptr); }
-			reference	operator[](size_t n) { return base()[-n-1];}
+			pointer operator->()
+			{ return (_ptr); }
+
+			reference	operator[](size_t n)
+			{ return base()[-n-1]; }
+	
 			reference operator*() const {
 				iterator_type tmp = _ptr;
 				return *--tmp;
 			}
+
 			reference	operator[](size_t n) const { return base()[-n-1]; }
-			bool operator==(const reverse_iterator& other) { return (this->_ptr == other._ptr); }
-			bool operator!=(const reverse_iterator& other) { return (this->_ptr != other._ptr); }
+			bool operator==(const reverse_iterator& other)
+			{ return (this->_ptr == other._ptr); }
+
+			bool operator!=(const reverse_iterator& other)
+			{ return (this->_ptr != other._ptr); }
 					
 		private:
 			iterator_type _ptr;

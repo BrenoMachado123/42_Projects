@@ -15,7 +15,8 @@ template<class T, T val>
 	static const T	value = val;
 	typedef T	value_type;
 	typedef integral_constant<T,val>	type;
-	operator value_type() const { return (value); }
+	operator value_type() const
+	{ return (value); }
 };
 
 typedef integral_constant<bool, true>	true_type;

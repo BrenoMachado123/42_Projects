@@ -199,8 +199,34 @@ void	testSwap() {
 	std::cout << "second bar capacity : " << bar.capacity() << std::endl;
 }
 
+void	testInsert() {
+	// yep... it's a Elden Ring reference.
+	std::vector<std::string> bar;
+	bar.push_back("TRES");
+	bar.push_back("DUO");
+	bar.push_back("NIHIL");
+	bar.insert(bar.begin() + 2,"UNUS");
+	bar.push_back("NIHIL");
+	bar.insert(bar.end(), "NIIIIHIIL");
+	std::cout << bar.size() << std::endl;
+	std::cout << bar.capacity() << std::endl;
+	for (size_t i = 0; i < bar.size(); i++)
+		std::cout << bar[i] << std::endl;
+	std::cout << std::endl;
+	/* ... */
+	ft::vector<std::string> foo;
+	foo.push_back("TRES");
+	foo.push_back("DUO");
+	foo.push_back("NIHIL");
+	foo.insert(foo.begin() + 2, 5, "UNUS");
+	foo.push_back("NIHIIL");
+	foo.insert(foo.end(), "NIIIIHIIL");
+	printVector(foo);
+
+}
+
 int main() {
-	testSwap();
+	testInsert();
 	// insert the functions test
 	return 0;
 }
