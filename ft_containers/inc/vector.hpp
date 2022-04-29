@@ -32,11 +32,11 @@ namespace ft {
 
 				//construction
 				explicit vector (const allocator_type& alloc = allocator_type()) :
-				_alloc(alloc), _size(0), _capacity(0), _buff(NULL) {}
+				_alloc(alloc), _size(0), _capacity(0), _buff(pointer()) {}
 
 				explicit vector( size_type count, const value_type& value = value_type(),
 				const Allocator& alloc = Allocator()) :
-				_alloc(alloc), _size(count), _capacity(count), _buff(NULL)  {
+				_alloc(alloc), _size(count), _capacity(count), _buff(pointer())  {
 					if (count > max_size()) {
 						throw std::length_error("cannot create std::vector larger than max_size()");
 					}
@@ -49,7 +49,7 @@ namespace ft {
 		 		template <class InputIterator>
 					vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 							typename enable_if<!is_integral<InputIterator>::value>::type* = 0):
-						_alloc(alloc), _size(last - first), _capacity(last - first), _buff(NULL) {
+						_alloc(alloc), _size(last - first), _capacity(last - first), _buff(pointer()) {
 					if (_size > 0) {
 						_buff = _alloc.allocate(_size);
 						size_type i = 0;
@@ -73,7 +73,7 @@ namespace ft {
 
 				// member functions
 
-				void	push_back(const value_type& val) {
+				void	push_back(const value_type& val ) {
 					if (!_capacity && !_size) 
 						_reAlloc(1);
 					else if (_size >= _capacity)
@@ -93,7 +93,8 @@ namespace ft {
 				}
 
 				void	reserve(size_type n) {
-					if (n > _capacity) { _reAlloc(n); }
+					if (n > _capacity)
+						_reAlloc(n);
 				}
 
 				void resize (size_type n, value_type val = value_type()) {
@@ -101,6 +102,7 @@ namespace ft {
 						_reAlloc(n);
 					else if ( n > _size)
 						_reSize(n, val);
+					_size = n;
 				}
 
 				reference at (size_type n) {
@@ -161,45 +163,35 @@ namespace ft {
 					x = tmp;
 				}
 
-				// this one is really bad
 				iterator insert (iterator position, const value_type& val = value_type() ) {
 					size_type pos = _getRange(begin(), position);
-					if (pos > _size)
-						throw std::bad_alloc();
-					bool swap = false;
 					if (_size + 1 > _capacity)
 						_reAlloc(_size * 2);
-					push_back(value_type());
-					value_type save = *(_buff + pos);
-					value_type save_next = *(_buff + pos + 1);
+					_moveElements(pos, 1);
 					_setValue(_buff + pos, val);
-					for (size_type i = pos + 1; i < size() + 1; i++) {
-						value_type save_tmp = *(_buff + i);
-						if (!swap)
-						{ _setValue(_buff + i, save); swap = true; }
-						else
-						{ _setValue(_buff + i, save_next); save_next = save_tmp; }
-					}
-					return (position);
+					return (iterator(_buff + pos));
 				}
 
-				//but improving this one, I can improve the function above
-				//it's almost done but the output is giving me two more empty spaces
 				void insert (iterator position, size_type n, const value_type& val = value_type()) {
 					size_type pos = _getRange(begin(), position);
-					if (pos  > _size)
-						throw std::bad_alloc();
-					if (_size + n > _capacity)
-						_reAlloc(_size * 2);
-					for (size_type i = 0; i <= n; i++)
-						push_back(value_type());
-					pointer tmp_buff = &_buff[pos];
-					for (size_type i = pos; i < n; i++)
-						_setValue(_buff + i, val);
-					size_type idx = 0;
-					for (size_type i = pos + n; i < size(); i++)
-					{ _setValue(_buff + i, *(tmp_buff + idx)); idx++; }
+					if ((_size + n) > _capacity)
+						_reAlloc((_size + n) * 2);
+					_moveElements(pos, n);
+					for (size_type i = 0; i < n; i++)
+						_setValue((_buff + pos + i) , val);
 				}
+
+				template <class InputIterator>
+    				void insert (iterator position, InputIterator first, InputIterator last, 
+					typename enable_if<!is_integral<InputIterator>::value>::type* = 0) {
+						size_type pos = _getRange(begin(), position);
+						size_type range = last - first;
+						if (range >= _capacity)
+							_reAlloc(range + _size);
+						_moveElements(pos, range);
+						for (size_type i = 0; i < range; first++, i++)
+							_setValue((_buff + pos + i) , *first);
+					}
 			
 
 				//operators
@@ -276,11 +268,11 @@ namespace ft {
 				{ return _capacity; }
 
 				bool empty()
-				{ return (!_size ? true : false); }
+				{ return (_size == 0); }
 
 
 			private:
-				//function that will reallocate the vector size in general; 
+				//reallocate the vector capacity; 
 				void	_reAlloc(size_type newCapacity) {
 					pointer newPtr;
 					newPtr = _alloc.allocate(newCapacity);
@@ -295,7 +287,7 @@ namespace ft {
 					_capacity = newCapacity;
 				}
 
-				//function that will reallocate the vector size in resize;
+				//reallocate the vector size;;
 				void	_reSize(size_type n, value_type val = value_type()) {
 					value_type element = 0;		
 					if (val)
@@ -303,18 +295,17 @@ namespace ft {
 					for (size_type i = _size; i < n; i++) {
 						_alloc.construct(_buff + i, element);
 					}
-					_size = n;
 					if (n > _capacity)
 						_reAlloc(n * 2);
 				}
 
-				//set a new value to a element in vector
+				//set a new value to a element in vector;
 				void	_setValue(pointer element, value_type val = value_type() ) {
 					_alloc.destroy(element);
 					_alloc.construct(element, val);
 				}
 
-				//function that will fill the blank spaces left by erase function;
+				//fill the blank spaces left by erase function with the next value;
 				void	_fillErased(size_type start, size_type end, value_type fill = value_type()) {
 					if (fill != value_type()) {
 						_setValue(_buff + start, fill);
@@ -326,9 +317,18 @@ namespace ft {
 						_alloc.construct(_buff + i,  *(_buff + next));
 					}
 				}
-				
 
-				//get a range between two iterators
+				//move the elements of the vector;
+				void	_moveElements(size_type start, size_type n) {
+					vector copyVector = *this;
+					iterator itr = copyVector.begin() + start;
+					for (size_type i = 0; i < n ;i++)
+						push_back(value_type());
+					for (size_type i = start + n; i < size(); itr++, i++)
+						_setValue(_buff + i, *itr);
+				}
+				
+				//get a range between two iterators;
 				difference_type _getRange(iterator first, iterator last)
 				{ return (last - first); }
 

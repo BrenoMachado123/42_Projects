@@ -206,7 +206,7 @@ void	testInsert() {
 	bar.push_back("DUO");
 	bar.push_back("NIHIL");
 	bar.insert(bar.begin() + 2,"UNUS");
-	bar.push_back("NIHIL");
+	bar.push_back("NIHIIL");
 	bar.insert(bar.end(), "NIIIIHIIL");
 	std::cout << bar.size() << std::endl;
 	std::cout << bar.capacity() << std::endl;
@@ -218,12 +218,40 @@ void	testInsert() {
 	foo.push_back("TRES");
 	foo.push_back("DUO");
 	foo.push_back("NIHIL");
-	foo.insert(foo.begin() + 2, 5, "UNUS");
+	foo.insert(foo.begin() + 2, "UNUS");
 	foo.push_back("NIHIIL");
 	foo.insert(foo.end(), "NIIIIHIIL");
 	printVector(foo);
 
 }
+
+
+void testInsert2() {
+	ft::vector<int> myvector (3,100);
+	ft::vector<int>::iterator it;
+	
+	
+	it = myvector.begin();
+	it = myvector.insert ( it , 200 );
+	myvector.insert (it, 2, 300);
+	
+	// "it" no longer valid, get a new one:
+	it = myvector.begin();
+	std::vector<int> anothervector (2,400);
+	myvector.insert (it+2, anothervector.begin(), anothervector.end());
+	
+	int myarray [] = { 501,502,503 };
+	myvector.insert (myvector.begin(), myarray, myarray+3);
+	
+	std::cout << "myvector contains:";
+	for (it=myvector.begin(); it != myvector.end(); it++)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
+	std::cout << myvector.size() << std::endl;
+	std::cout << myvector.capacity() << std::endl;
+
+}
+
 
 int main() {
 	testInsert();
