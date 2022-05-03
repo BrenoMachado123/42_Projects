@@ -15,7 +15,7 @@ void	printVector(const ft::vector<T>& vector) {
  void _testReserve() {
 	ft::vector<int>::size_type sz;
 
-  	ft::vector<int> foo;
+	ft::vector<int> foo;
   	sz = foo.capacity();
   	std::cout << "making foo grow:\n";
   	for (int i=0; i<100; ++i) {
@@ -225,7 +225,6 @@ void	testInsert() {
 
 }
 
-
 void testInsert2() {
 	ft::vector<int> myvector (3,100);
 	ft::vector<int>::iterator it;
@@ -249,12 +248,24 @@ void testInsert2() {
 	std::cout << '\n';
 	std::cout << myvector.size() << std::endl;
 	std::cout << myvector.capacity() << std::endl;
+}
 
+void	testConstructor() {
+	ft::vector<int> test(100);
+	ft::vector<int> v1(test.begin(), test.end());
+	ft::vector<int>::reverse_iterator itr = v1.rbegin();
+
+	int size = 0;
+	while (itr++ != v1.rend()) {
+		std::cout << *itr << " ";
+		size += 1;
+	}
+	std::cout << "size: "  << size << std::endl;
 }
 
 
 int main() {
-	testInsert();
+	testResize();
 	// insert the functions test
 	return 0;
 }

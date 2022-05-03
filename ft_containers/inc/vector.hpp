@@ -61,9 +61,8 @@ namespace ft {
 				}
 
 				vector (const vector& x) :
-				_alloc(x._alloc), _size(0),_capacity(0), _buff(NULL) {
-					*this = x;
-				}
+				_alloc(x._alloc), _size(0),_capacity(0), _buff(NULL)
+				{ *this = x; }
 
 				~vector() {
 					clear();
@@ -287,23 +286,20 @@ namespace ft {
 					_capacity = newCapacity;
 				}
 
-				//reallocate the vector size;;
-				void	_reSize(size_type n, value_type val = value_type()) {
-					value_type element = 0;		
-					if (val)
-						element = val;
-					for (size_type i = _size; i < n; i++) {
-						_alloc.construct(_buff + i, element);
-					}
-					if (n > _capacity)
-						_reAlloc(n * 2);
-				}
-
 				//set a new value to a element in vector;
 				void	_setValue(pointer element, value_type val = value_type() ) {
 					_alloc.destroy(element);
 					_alloc.construct(element, val);
 				}
+
+				//reallocate the vector size;;
+				void	_reSize(size_type n, value_type val = value_type()) {
+					if (n > capacity())
+						_reAlloc(n);
+					size_type range = n - size();	
+					insert(end(), range, val);
+				}
+
 
 				//fill the blank spaces left by erase function with the next value;
 				void	_fillErased(size_type start, size_type end, value_type fill = value_type()) {
