@@ -1,4 +1,4 @@
-CPPFLAGS = -Wall -Wextra -Werror -std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
 YELLOW='\033[33m'
 NONE='\033[0m'
@@ -17,7 +17,7 @@ all: $(NAME)
 
 $(NAME):
 	@echo $(STYLE)$(YELLOW) ">> Compiling $(NAME) <<"$(GRAY)
-	g++ $(CFLAGS) $(SRC) -o $(NAME)
+	g++ $(CPPFLAGS) $(SRC) -o $(NAME)
 	g++ $(CPPFLAGS) -c $(SRC)
 	@echo $(NONE)$(STYLE)$(GREEN) "<< $(NAME) compiled >>" $(NONE)
 

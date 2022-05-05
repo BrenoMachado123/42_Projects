@@ -1,4 +1,5 @@
 #include "vector.hpp"
+#include "binary_search_tree.hpp"
 #include <iostream>
 #include <vector>
 
@@ -263,9 +264,21 @@ void	testConstructor() {
 	std::cout << "size: "  << size << std::endl;
 }
 
+void	testBST() {
+	ft::BST<int> node;
+	node.insert(50);
+	node.insert(30);
+	node.insert(20);
+	node.insert(40);
+	node.insert(70);
+	node.insert(60);
+	node.insert(80);
+	node.deleteNode(20);
+	node.inorder();
+}
 
 int main() {
-	testResize();
+	testBST();
 	// insert the functions test
 	return 0;
 }
