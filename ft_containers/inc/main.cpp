@@ -274,6 +274,8 @@ void	testBST() {
 	node.insert(60);
 	node.insert(80);
 	node.deleteNode(20);
+	//equal values not working as supposed to;
+	node.deleteNode(50);
 	node.inorder();
 }
 

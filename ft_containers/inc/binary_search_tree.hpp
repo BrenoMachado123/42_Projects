@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-//only some steps in mind.
+//BST getting started slowly
 namespace ft {
 	template<class T>
 		struct BstNode {
@@ -27,6 +27,7 @@ namespace ft {
 			BstNode* _parent;
 		};
 
+	//DefaultAlloc will the allocation of ft::pair type declared in map.hpp;
 	template<class T, class BSTNodeType = BstNode<T>, class BSTNodeAlloc = std::allocator<BstNode<T> >, class DefaultAlloc = std::allocator<T> >
 		class BST {
 			typedef T value_type;
@@ -109,8 +110,6 @@ namespace ft {
 					}
 				}
 
-				//segfault when I delete more than one node;
-				//I don't understand yet how deallocate the memory in this case too well. 
 				BSTNode* _deleteNode(BSTNode* node, value_type item = value_type()) {
 					if (node) {
 						if (item < node->_data)
@@ -118,8 +117,10 @@ namespace ft {
 						else if (item > node->_data)
 							node->_right = _deleteNode(node->_right, item);
 						else {
-							if (!node->_left and !node->_right)
+							if (!node->_left and !node->_right) {
+								_deallocNode(node);
 								return (NULL);
+							}
 							else if (!node->_left) {
 								BSTNode* tmp = node->_right;
 								_deallocNode(node);
