@@ -2,6 +2,7 @@
 #include "binary_search_tree.hpp"
 #include <iostream>
 #include <vector>
+#include <map>
 
 template<typename T>
 void	printVector(const ft::vector<T>& vector) {
@@ -271,16 +272,14 @@ void	testBST() {
 	node.insert(20);
 	node.insert(40);
 	node.insert(70);
-	node.insert(60);
+	node.insert(50);
 	node.insert(80);
-	node.deleteNode(20);
-	//equal values not working as supposed to;
-	node.deleteNode(50);
 	node.inorder();
 }
 
 int main() {
 	testBST();
+
 	// insert the functions test
 	return 0;
 }

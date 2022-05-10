@@ -10,21 +10,21 @@ namespace ft {
 			typedef T type;
 
 			BstNode() : 
-			_data(type()), _left(NULL), _right(NULL), _parent(NULL) {}
+			_data(type()), left(NULL), right(NULL), parent(NULL) {}
 
 			BstNode(type data) :
-			_data(data), _left(NULL), _right(NULL), _parent(NULL) {}
+			_data(data), left(NULL), right(NULL), parent(NULL) {}
 
 			BstNode(BstNode* left, BstNode* right, BstNode* parent) :
-			_data(type()), _left(left), _right(right), _parent(parent) {}
+			_data(type()), left(left), right(right), parent(parent) {}
 
 			BstNode(type data, BstNode* left, BstNode* right, BstNode* parent) :
-			_data(data), _left(left), _right(right), _parent(parent) {}
+			_data(data), left(left), right(right), parent(parent) {}
 
 			type _data;
-			BstNode* _left;
-			BstNode* _right;
-			BstNode* _parent;
+			BstNode* left;
+			BstNode* right;
+			BstNode* parent;
 		};
 
 	//DefaultAlloc will the allocation of ft::pair type declared in map.hpp;
@@ -44,9 +44,9 @@ namespace ft {
 				BSTNode* createNode(value_type key) {
 					BSTNode* tmp = _allocNode.allocate(1);
 					tmp->_data = key;
-					tmp->_left = NULL;
-					tmp->_right = NULL;
-					tmp->_parent = NULL;
+					tmp->left = NULL;
+					tmp->right = NULL;
+					tmp->parent = NULL;
 					_size++;
 					return tmp;
 				}
@@ -54,8 +54,11 @@ namespace ft {
 				~BST()
 				{ _deleteAllNode(_root); }
 
-				void insert(value_type key)
-				{ _root = _insertNode(_root, key); }
+				//std::map don't insert equal key values, so I'm not supposed to insert them too.  
+				void insert(value_type key) {
+					if (!_searchItem(_root, key))
+						_root = _insertNode(_root, key);	
+				}
 
 				void inorder()
 				{ _inorderNode(_root); }
@@ -66,9 +69,11 @@ namespace ft {
 				BSTNode* max()
 				{ _findMax(_root); }
 
-
 				void deleteNode(value_type item)
 				{ _root = _deleteNode(_root, item); }
+
+				bool isEmpty() 
+				{ return _root == NULL; }
 
 
 			private:
@@ -76,99 +81,102 @@ namespace ft {
 					if (node == NULL)
 						return createNode(key);
 					if (key < node->_data) {
-						BSTNode* lchild = _insertNode(node->_left, key);
-						node->_left = lchild;
-						lchild->_parent = node;
-					} else if (key >= node->_data) {
-						BSTNode* rchild = _insertNode(node->_right, key);
-						node->_right = rchild;
-						rchild->_parent = node;
+						BSTNode* lchild = _insertNode(node->left, key);
+						node->left = lchild;
+						lchild->parent = node;
+					} else if (key >=node->_data) {
+						BSTNode* rchild = _insertNode(node->right, key);
+						node->right = rchild;
+						rchild->parent = node;
 					}
 					return node;
 				}
 
 				void	_inorderNode(BSTNode* node) {
 					if (node) {
-						_inorderNode(node->_left);
+						_inorderNode(node->left);
 						std::cout << "Node: " << node->_data << " | ";
-						if (!node->_parent)
+						if (!node->parent)
 							std::cout << "<< Node parentless >>" << std::endl;
 						else
-							std::cout << "Parent: " << node->_parent->_data << std::endl;
-						_inorderNode(node->_right);
+							std::cout << "Parent: " << node->parent->_data << std::endl;
+						_inorderNode(node->right);
 					}
 				}
 
 				void	_deleteAllNode(BSTNode* node) {
 					if (node) {
-						if (node->_left)
-							_deleteAllNode(node->_left);
-						if (node->_right)
-							_deleteAllNode(node->_right);
+						if (node->left)
+							_deleteAllNode(node->left);
+						if (node->right)
+							_deleteAllNode(node->right);
 						_deallocNode(node);
-						node = NULL;
 					}
+				}
+
+				BSTNode* _getFilledBranch(BSTNode* node) {
+					if (!node->left and node->right)
+						return node->right;
+					else if (node->left and !node->right)
+						return node->left;
+					return NULL;
 				}
 
 				BSTNode* _deleteNode(BSTNode* node, value_type item = value_type()) {
 					if (node) {
 						if (item < node->_data)
-						   node->_left = _deleteNode(node->_left, item);
+						   node->left = _deleteNode(node->left, item);
 						else if (item > node->_data)
-							node->_right = _deleteNode(node->_right, item);
+							node->right = _deleteNode(node->right, item);
 						else {
-							if (!node->_left and !node->_right) {
+							if (!node->left and !node->right) {
 								_deallocNode(node);
 								return (NULL);
 							}
-							else if (!node->_left) {
-								BSTNode* tmp = node->_right;
+							else if (!node->left or !node->right) {
+								BSTNode* tmp = _getFilledBranch(node);
 								_deallocNode(node);
 								return (tmp);
 							}
-							else if (!node->_right) {
-								BSTNode* tmp = node->_left;
-								_deallocNode(node);
-								return (tmp);
-							}
-							BSTNode* minValueNode = _findMin(node->_right);
+							BSTNode* minValueNode = _findMin(node->right);
 							node->_data = item = minValueNode->_data;
-							node->_right = _deleteNode(node->_right, item);
+							node->right = _deleteNode(node->right, item);
 						}
 					}
 					return node;
 				}
 
-				BSTNode* _getNode(BSTNode*node, value_type item) {
-					static BSTNode* saveNode = node;
-					if (node) {
-						_getNode(node->_left, item);
-						std::cout << "-" << node->_data << "-" << std::endl;
-						if (node->_data == item)
-							saveNode = node;
-						_getNode(node->_right, item);
-					}
-					return (saveNode);
+				BSTNode* _searchItem(BSTNode* node, value_type item) {
+					if (!node)
+						return NULL;
+					else if (node->_data == item)
+						return node;
+					else if (node->_data < item)
+						_searchItem(node->right, item);
+					else
+						_searchItem(node->left, item);
+					return (NULL);
 				}
 
 				BSTNode* _findMin(BSTNode* node) {
 					BSTNode* currentNode = node;
-					while (currentNode->_left != NULL)
-						currentNode = currentNode->_left;
+					while (currentNode->left != NULL)
+						currentNode = currentNode->left;
 					return currentNode;
 				}
 
 				BSTNode* _findMax(BSTNode* node) {
 					BSTNode* currentNode = node;
-					while (currentNode->_right != NULL)
-						currentNode = currentNode->_right;
+					while (currentNode->right != NULL)
+						currentNode = currentNode->right;
 					return currentNode;
 				}
 
 				void	_deallocNode(BSTNode* node) {
 					_alloc.destroy(&node->_data);
-					_allocNode.destroy(node);
 					_allocNode.deallocate(node, 1);
+					node = NULL;
+					_size--;
 				}
 
 			protected:
