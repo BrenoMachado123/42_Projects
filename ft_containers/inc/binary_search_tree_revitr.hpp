@@ -16,58 +16,56 @@ namespace ft {
                 typedef typename std::ptrdiff_t difference_type;
                 typedef typename std::bidirectional_iterator_tag iterator_category;
 
-                BSTIter_rev() : _bstPtr(pointer()) {}
-                BSTIter_rev(pointer ptr) : _bstPtr(ptr) {}
+                BSTIter_rev() : _bstRevPtr(pointer()) {}
+                BSTIter_rev(pointer ptr) : _bstRevPtr(ptr) {}
 			    BSTIter_rev(const BSTIter_rev& other)
                 { *this = other; }
 
 			    BSTIter_rev& operator=(const BSTIter_rev& other) {
 				    if (this != &other)
-				    	this->_bstPtr = other._bstPtr;
+				    	this->_bstRevPtr = other._bstRevPtr;
 			    	return (*this);
 			    }
 			    ~BSTIter_rev() {}
 
                 value_type* operator->() const
-                { return &_bstPtr->data; }
+                { return &_bstRevPtr->data; }
 
                 value_type& operator*() const
-                { return _bstPtr->data; }
+                { return _bstRevPtr->data; }
                 
                 bool operator==(const BSTIter_rev& other) {
-                    return (_bstPtr == other._bstPtr);
+                    return (_bstRevPtr == other._bstRevPtr);
                 }
 
                 bool operator!=(const BSTIter_rev& other) {
-                    return (!(_bstPtr == other._bstPtr));
+                    return (!(_bstRevPtr == other._bstRevPtr));
                 }
 
                 BSTIter_rev operator++() {
-                    _bstPtr = _nodePrevItr(_bstPtr);
+                    _bstRevPtr = _nodePrevItr(_bstRevPtr);
                     return *this;
                 }
 
                  BSTIter_rev operator--() {
-                    _bstPtr = _nodeNextItr(_bstPtr);
+                    _bstRevPtr = _nodeNextItr(_bstRevPtr);
                     return *this;
                 }
 
                 BSTIter_rev operator--(int) {
                     BSTIter_rev tmp(*this);
-                    ++(*this);
+                    operator--();
                     return tmp;
                 }
 
                 BSTIter_rev operator++(int) {
                     BSTIter_rev tmp(*this);
-                    --(*this);
+                    operator++();
                     return tmp;
                 }
 
             private:
                 pointer _findMinItr(pointer node) {
-                    if (!node or !node->right)
-                        return NULL;
 					pointer currentNode = node;
 					while (currentNode->left->parent != NULL)
 						currentNode = currentNode->left;
@@ -75,10 +73,8 @@ namespace ft {
 				}
 
 				pointer _findMaxItr(pointer node) {
-                    if (!node or !node->right)
-                        return NULL;
 					pointer currentNode = node;
-					while (currentNode->right->parent != NULL)
+					while (currentNode->right != NULL)
 						currentNode = currentNode->right;
 					return currentNode;
 				}
@@ -105,7 +101,7 @@ namespace ft {
 				}
 
             public:
-                pointer _bstPtr;
+                pointer _bstRevPtr;
         };
 }
 

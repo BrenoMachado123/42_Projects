@@ -293,12 +293,13 @@ void	testMapInsert() {
 	std::cout << v.size() << std::endl;
 	v.insert( ft::pair<char,int>('K', 300) );
 	v.insert( ft::pair<char,int>('J', 400) );
+	v.insert( ft::pair<char,int>('L', 400) );
 	std::cout << v.size() << std::endl;
 	std::cout << v.count('J') << std::endl;
 	//reverse iterator not working yet.
- 	ft::map<char,int>::reverse_iterator start1 = v.rbegin();
-	ft::map<char,int>::reverse_iterator end1 = v.rend();
-	//v.Printtest();
+ 	ft::map<char,int>::reverse_iterator start1 = v.rbegin(); // max();
+	ft::map<char,int>::reverse_iterator end1 = v.rend(); // NULL;
+	v.Printtest();
 	while (start1 != end1) {
 		std::cout << start1->first << " => " << start1->second << std::endl;
 		start1++;

@@ -133,6 +133,8 @@ namespace ft {
 							std::cout << "moving to left" << std::endl;
 							_inorderNode(node->left);
 						}
+						else
+							std::cout << "no left node" << std::endl;
 						std::cout << "Node: " << node->data.first << "," << node->data.second << " | ";
 						if (!node->parent)
 							std::cout << "<< Node parentless >>" << std::endl;
@@ -142,6 +144,8 @@ namespace ft {
 							std::cout << "moving to right" << std::endl;
 							_inorderNode(node->right);
 						}
+						else
+							std::cout << "no right node" << std::endl;
 					}
 				}
 
