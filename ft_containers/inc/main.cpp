@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include "map.hpp"
 
 template<typename T>
 void	printVector(const ft::vector<T>& vector) {
@@ -265,20 +266,47 @@ void	testConstructor() {
 	std::cout << "size: "  << size << std::endl;
 }
 
-void	testBST() {
-	ft::BST<int> node;
-	node.insert(50);
-	node.insert(30);
-	node.insert(20);
-	node.insert(40);
-	node.insert(70);
-	node.insert(50);
-	node.insert(80);
-	node.inorder();
+void	testMapInsert() {
+	ft::map<char,int> v;
+
+	v.insert( ft::pair<char,int>('a', 100) );
+	v.insert( ft::pair<char,int>('z', 200) );
+	ft::map<char,int>::iterator start = v.begin();
+	v.insert(start, ft::pair<char,int>('b', 300) );
+	v.insert(start, ft::pair<char,int>('c', 400) );
+
+	
+	std::cout << "a => " << v.find('z')->second << '\n';
+
+	std::cout << v.size() << std::endl;
+
+	ft::map<char,int>::iterator end = v.end();
+	//v.Printtest();
+	while (start != end) {
+		std::cout << start->first << " => " << start->second << std::endl;
+		start++;
+	}
+
+	v.clear();
+	if (v.empty())
+		std::cout << "deleted" << std::endl;
+	std::cout << v.size() << std::endl;
+	v.insert( ft::pair<char,int>('K', 300) );
+	v.insert( ft::pair<char,int>('J', 400) );
+	std::cout << v.size() << std::endl;
+	std::cout << v.count('J') << std::endl;
+	//reverse iterator not working yet.
+ 	ft::map<char,int>::reverse_iterator start1 = v.rbegin();
+	ft::map<char,int>::reverse_iterator end1 = v.rend();
+	//v.Printtest();
+	while (start1 != end1) {
+		std::cout << start1->first << " => " << start1->second << std::endl;
+		start1++;
+	}
 }
 
 int main() {
-	testBST();
+	testMapInsert();
 
 	// insert the functions test
 	return 0;
