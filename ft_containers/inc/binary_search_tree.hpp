@@ -3,6 +3,8 @@
 
 # include <iostream>
 #include "ft_pair.hpp"
+#include <stdexcept>
+#include <stdlib.h>
 
 namespace ft {
 	template<class T>
@@ -33,22 +35,23 @@ namespace ft {
 
 			public:
 				BST() :
-				_root(NULL), _allocNode(node_allocator_type()), _alloc(allocator_type()), _size(0) {}
+				_root(NULL), _allocNode(node_allocator_type()), _alloc(allocator_type()), _size(0), _rootNode(false) {}
 
 				BST(const BST& other)
 				{*this = other; }
 
 				BST& operator=(const BST& other) {
 					if (this != &other) {
-						deleteAllNode(_root);
+						_deleteAllNode(_root);
 						BSTNode* tmp = other._root;
 						this->insert(tmp->data);
-						tmp = other.min();
-						while (tmp != other.max()) {
+						tmp = _findMin(other._root);
+						while (tmp != _findMax(other._root)) {
 							this->insert(tmp->data);
-							tmp++;
+							tmp = _nodeNext(tmp);
 						}
 					}
+					return *this;
 				}
 
 				~BST()
@@ -74,8 +77,20 @@ namespace ft {
 				BSTNode* max()
 				{ return _findMax(_root); }
 
-				void deleteNode(value_type item)
-				{ _root = _deleteNode(_root, item); }
+				void deleteNode(value_type item) {
+					if (item == getEnd()->data) {
+						std::cerr << "free() : invalid pointer" << std::endl;
+						std::abort();
+					}
+					_root = _deleteNode(_root, item);
+					_size--;
+				}
+
+				BSTNode * getEnd() { 
+					if (isEmpty())
+						return NULL;
+					return _root->parent;
+				}
 
 				bool isEmpty() 
 				{ return (_root == NULL); }
@@ -107,7 +122,13 @@ namespace ft {
 					_alloc.construct(&tmp->data, key);
 					tmp->left = NULL;
 					tmp->right = NULL;
-					tmp->parent = NULL;
+					if (_rootNode == false) {
+						_rootNode = true;
+						tmp->parent = _allocNode.allocate(1); 
+						tmp->parent->data = value_type(0,0);
+					}
+					else
+						tmp->parent = NULL;
 					_size++;
 					return tmp;
 				}
@@ -151,11 +172,15 @@ namespace ft {
 
 				void	_deleteAllNode(BSTNode* node) {
 					if (!node)
-						return ; 
+						return ;
+					if (node->parent->data == value_type(0,0)) {
+						_deallocNode(node->parent);
+					}
 					_deleteAllNode(node->left);
 					_deleteAllNode(node->right);
 					_deallocNode(node);
 					_size--;
+					_rootNode = false;
 				}
 
 				BSTNode* _getFilledBranch(BSTNode* node) {
@@ -166,11 +191,11 @@ namespace ft {
 					return NULL;
 				}
 
-				BSTNode* _deleteNode(BSTNode* node, value_type item = value_type()) {
+				BSTNode* _deleteNode(BSTNode* node, value_type item) {
 					if (node) {
-						if (item < node->data)
+						if (item.first < node->data.first)
 						   node->left = _deleteNode(node->left, item);
-						else if (item > node->data)
+						else if (item.first > node->data.first)
 							node->right = _deleteNode(node->right, item);
 						else {
 							if (!node->left and !node->right) {
@@ -179,6 +204,9 @@ namespace ft {
 							}
 							else if (!node->left or !node->right) {
 								BSTNode* tmp = _getFilledBranch(node);
+								tmp->parent = node->parent;
+								if (node->parent == _root->parent)
+									_deallocNode(node->parent);
 								_deallocNode(node);
 								return (tmp);
 							}
@@ -187,7 +215,6 @@ namespace ft {
 							node->right = _deleteNode(node->right, item);
 						}
 					}
-					_size--;
 					return node;
 				}
 
@@ -201,7 +228,7 @@ namespace ft {
 						}
 						tmp = _nodeNext(tmp);
 					}
-					return NULL;
+					return _root->parent;
 				}
 
 				BSTNode* _searchItem(BSTNode* node, const value_type& item) const {
@@ -218,6 +245,8 @@ namespace ft {
 				}
 
 				BSTNode* _findMin(BSTNode* node) {
+					if (!node)
+						return NULL;
 					BSTNode* currentNode = node;
 					while (currentNode->left != NULL)
 						currentNode = currentNode->left;
@@ -225,6 +254,8 @@ namespace ft {
 				}
 
 				BSTNode* _findMin(BSTNode* node) const {
+					if (!node)
+						return NULL;
 					BSTNode* currentNode = node;
 					while (currentNode->left != NULL)
 						currentNode = currentNode->left;
@@ -232,6 +263,8 @@ namespace ft {
 				}
 
 				BSTNode* _findMax(BSTNode* node) {
+					if (!node)
+						return NULL;
 					BSTNode* currentNode = node;
 					while (currentNode->right != NULL)
 						currentNode = currentNode->right;
@@ -239,6 +272,8 @@ namespace ft {
 				}
 
 				BSTNode* _findMax(BSTNode* node) const {
+					if (!node)
+						return NULL;
 					BSTNode* currentNode = node;
 					while (currentNode->right != NULL)
 						currentNode = currentNode->right;
@@ -247,7 +282,6 @@ namespace ft {
 
 				void	_deallocNode(BSTNode* node) {
 					_alloc.destroy(&node->data);
-					_allocNode.destroy(node);
 					_allocNode.deallocate(node, 1);
 					node = NULL;
 				}
@@ -303,6 +337,7 @@ namespace ft {
 				node_allocator_type _allocNode;
 				allocator_type _alloc;
 				size_type _size;
+				bool _rootNode;
 		};
 		
 }

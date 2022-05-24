@@ -1,4 +1,4 @@
-CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=leak
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
 YELLOW='\033[33m'
 NONE='\033[0m'
@@ -9,7 +9,6 @@ STYLE='\033[3m'
 NAME = tester
 
 SRC = $(wildcard *.cpp)
-
 
 OBJS = $(SRC:.cpp=.o)
 

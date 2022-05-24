@@ -5,6 +5,14 @@
 #include <map>
 #include "map.hpp"
 
+
+# define FT 1
+#ifndef FT
+# define container std
+#else
+# define container ft
+#endif
+
 template<typename T>
 void	printVector(const ft::vector<T>& vector) {
 	std::cout << "~~~~~~~ PRINT ~~~~~~" << std::endl; 
@@ -16,9 +24,9 @@ void	printVector(const ft::vector<T>& vector) {
 }
 
  void _testReserve() {
-	ft::vector<int>::size_type sz;
+	container::vector<int>::size_type sz;
 
-	ft::vector<int> foo;
+	container::vector<int> foo;
   	sz = foo.capacity();
   	std::cout << "making foo grow:\n";
   	for (int i=0; i<100; ++i) {
@@ -28,7 +36,7 @@ void	printVector(const ft::vector<T>& vector) {
 		  std::cout << "capacity changed: " << sz << '\n';
 	  }
 	}
-	ft::vector<int> bar;
+	container::vector<int> bar;
 	sz = bar.capacity();
 	bar.reserve(100);   // this is the only difference with foo above
 	std::cout << "making bar grow:\n";
@@ -42,7 +50,7 @@ void	printVector(const ft::vector<T>& vector) {
 }
 
  void	testResize() {
-	ft::vector<int> myvector;
+	container::vector<int> myvector;
 	// set some initial content:
 	for (int i=1;i<10;i++) myvector.push_back(i);
 
@@ -59,7 +67,7 @@ void	printVector(const ft::vector<T>& vector) {
 }
 
  void testGetAllocator() {
-	ft::vector<int> myvector;
+	container::vector<int> myvector;
   	int * p;
   	unsigned int i;
 
@@ -80,7 +88,7 @@ void	printVector(const ft::vector<T>& vector) {
 
  void testAt() {
 
-	ft::vector<int> myvector (10);   // 10 zero-initialized ints
+	container::vector<int> myvector (10);   // 10 zero-initialized ints
 
   	// assign some values:
   	for (unsigned i=0; i<myvector.size(); i++)
@@ -93,7 +101,7 @@ void	printVector(const ft::vector<T>& vector) {
 }
 
 void	testFrontBack() {
-	ft::vector<int> myvector;
+	container::vector<int> myvector;
 	myvector.push_back(10);
 
 	std::cout << myvector.back() << std::endl;
@@ -109,13 +117,13 @@ void	testFrontBack() {
 }
 
 void	testAssign() {
-	ft::vector<int> first;
-  	ft::vector<int> second;
-  	ft::vector<int> third;
+	container::vector<int> first;
+  	container::vector<int> second;
+  	container::vector<int> third;
 
   	first.assign (7,100);             // 7 ints with a value of 100
 
-  	ft::vector<int>::iterator it;
+  	container::vector<int>::iterator it;
 	
 	it = first.begin() + 1;
 
@@ -130,7 +138,7 @@ void	testAssign() {
  }
 
 void	testErase() {
-	ft::vector<int> myvector;
+	container::vector<int> myvector;
 	std::vector<int> stdvector;
 
  	// set some values (from 1 to 10)
@@ -161,8 +169,8 @@ void	testErase() {
 }
 
 void	testSwap() {
-	ft::vector<int> foo (3,100);   // three ints with a value of 100
-	ft::vector<int> bar (5,200);   // five ints with a value of 200
+	container::vector<int> foo (3,100);   // three ints with a value of 100
+	container::vector<int> bar (5,200);   // five ints with a value of 200
 
 	std::cout << "first foo size : " << foo.size() <<std::endl;
 	int *ptr = foo.get_allocator().allocate(foo.size());
@@ -225,12 +233,11 @@ void	testInsert() {
 	foo.push_back("NIHIIL");
 	foo.insert(foo.end(), "NIIIIHIIL");
 	printVector(foo);
-
 }
 
 void testInsert2() {
-	ft::vector<int> myvector (3,100);
-	ft::vector<int>::iterator it;
+	container::vector<int> myvector (3,100);
+	container::vector<int>::iterator it;
 	
 	
 	it = myvector.begin();
@@ -254,9 +261,9 @@ void testInsert2() {
 }
 
 void	testConstructor() {
-	ft::vector<int> test(100);
-	ft::vector<int> v1(test.begin(), test.end());
-	ft::vector<int>::reverse_iterator itr = v1.rbegin();
+	container::vector<int> test(100);
+	container::vector<int> v1(test.begin(), test.end());
+	container::vector<int>::reverse_iterator itr = v1.rbegin();
 
 	int size = 0;
 	while (itr++ != v1.rend()) {
@@ -267,21 +274,36 @@ void	testConstructor() {
 }
 
 void	testMapInsert() {
-	ft::map<char,int> v;
+	container::map<char,int> v;
 
-	v.insert( ft::pair<char,int>('a', 100) );
-	v.insert( ft::pair<char,int>('z', 200) );
-	ft::map<char,int>::iterator start = v.begin();
-	v.insert(start, ft::pair<char,int>('b', 300) );
-	v.insert(start, ft::pair<char,int>('c', 400) );
+	v.insert( container::pair<char,int>('c', 100) );
+	v.insert( container::pair<char,int>('a', 200) );
+	v.insert( container::pair<char,int>('d', 300) );
 
-	
-	std::cout << "a => " << v.find('z')->second << '\n';
+	container::map<char,int>::const_iterator start = v.begin();
+	//v.erase(v.end(), v.end());
+	container::pair<container::map<char,int>::iterator,container::map<char,int>::iterator> ret;
+	ret = v.equal_range('c');
+	std::cout << ret.first->first << " | " << ret.second->first << std::endl;
+	//std::cout << "the lower bound is " << start->first << std::endl;
+	//while (start != v.end()) {
+	//	std::cout << start->first << " => " << start->second << std::endl;
+	//	start++;
+	//}
+	//v.insert(start, container::pair<char,int>('c', 400) );
+	//std::cout << v.size() << std::endl;
+	//std::cout << v['l'] << std::endl;
+	//container::map<char,int>::iterator it = v.find('b');
+	//v.erase(start);
+	//std::cout << v.size() << std::endl;
+	return ; 
+
+	std::cout << "a => " << v.find('p')->second << '\n';
 
 	std::cout << v.size() << std::endl;
 
-	ft::map<char,int>::iterator end = v.end();
-	//v.Printtest();
+	container::map<char,int>::iterator end = v.end();
+	std::cout << end->first << std::endl;
 	while (start != end) {
 		std::cout << start->first << " => " << start->second << std::endl;
 		start++;
@@ -291,24 +313,21 @@ void	testMapInsert() {
 	if (v.empty())
 		std::cout << "deleted" << std::endl;
 	std::cout << v.size() << std::endl;
-	v.insert( ft::pair<char,int>('K', 300) );
-	v.insert( ft::pair<char,int>('J', 400) );
-	v.insert( ft::pair<char,int>('L', 400) );
+	v.insert( container::pair<char,int>('K', 300) );
+	v.insert( container::pair<char,int>('J', 400) );
+	v.insert( container::pair<char,int>('L', 400) );
 	std::cout << v.size() << std::endl;
 	std::cout << v.count('J') << std::endl;
-	//reverse iterator not working yet.
- 	ft::map<char,int>::reverse_iterator start1 = v.rbegin(); // max();
-	ft::map<char,int>::reverse_iterator end1 = v.rend(); // NULL;
-	v.Printtest();
+ 	container::map<char,int>::reverse_iterator start1 = v.rbegin(); // max();
+	container::map<char,int>::reverse_iterator end1 = v.rend(); // NULL;
 	while (start1 != end1) {
 		std::cout << start1->first << " => " << start1->second << std::endl;
 		start1++;
 	}
 }
 
-int main() {
-	testMapInsert();
 
+int main() {
 	// insert the functions test
 	return 0;
 }

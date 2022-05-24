@@ -37,6 +37,8 @@ namespace ft {
 				explicit vector( size_type count, const value_type& value = value_type(),
 				const Allocator& alloc = Allocator()) :
 				_alloc(alloc), _size(count), _capacity(count), _buff(pointer())  {
+					if (!count)
+						return ;
 					if (count > max_size()) {
 						throw std::length_error("cannot create std::vector larger than max_size()");
 					}
@@ -68,6 +70,7 @@ namespace ft {
 					clear();
 					if (_capacity > 0)
 						_alloc.deallocate(_buff, _capacity);
+					_capacity = 0;
 				}
 
 				// member functions
@@ -92,13 +95,15 @@ namespace ft {
 				}
 
 				void	reserve(size_type n) {
+					if (n > max_size())
+						throw std::length_error("vector::reserve");
 					if (n > _capacity)
 						_reAlloc(n);
 				}
 
 				void resize (size_type n, value_type val = value_type()) {
 					if (n < _size)
-						_reAlloc(n);
+						_reAlloc(n, false);
 					else if ( n > _size)
 						_reSize(n, val);
 					_size = n;
@@ -209,12 +214,17 @@ namespace ft {
 
 				vector& operator=(const vector& other) {
 					if (this != &other) {
-						this->~vector();
-						_size = other.size();
-						_capacity = other.capacity();	
-						_buff = _alloc.allocate(_size);
-						for (size_type i = 0; i < _size; i++)
+						if (_capacity >= other._size) {
+							clear()
+							_alloc.deallocate(_buff, _capacity);
+							_capacity = other.capacity();	
+							_buff = _alloc.allocate(other._size);
+						}
+						else
+							clear();
+						for (size_type i = 0; i < other._size; i++)
 							_alloc.construct(_buff + i, other.at(i));
+						_size = other.size();
 					}
 					return *this;
 				}
@@ -272,7 +282,7 @@ namespace ft {
 
 			private:
 				//reallocate the vector capacity; 
-				void	_reAlloc(size_type newCapacity) {
+				void	_reAlloc(size_type newCapacity, bool cap_change = true) {
 					pointer newPtr;
 					newPtr = _alloc.allocate(newCapacity);
 					if (newCapacity < _size)
@@ -283,7 +293,8 @@ namespace ft {
 					}
 					_alloc.deallocate(_buff, _capacity);
 					_buff = newPtr;
-					_capacity = newCapacity;
+					if (cap_change == true)
+						_capacity = newCapacity;
 				}
 
 				//set a new value to a element in vector;
@@ -319,9 +330,17 @@ namespace ft {
 					vector copyVector = *this;
 					iterator itr = copyVector.begin() + start;
 					for (size_type i = 0; i < n ;i++)
-						push_back(value_type());
+						_push();
 					for (size_type i = start + n; i < size(); itr++, i++)
 						_setValue(_buff + i, *itr);
+				}
+
+				void	_push() {
+					if (!_capacity && !_size) 
+						_reAlloc(1);
+					else if (_size >= _capacity)
+						_reAlloc(_capacity * 2);
+					_size++;
 				}
 				
 				//get a range between two iterators;
@@ -365,7 +384,6 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{ return (!(lhs > rhs)); }
-
 }
 
 #endif

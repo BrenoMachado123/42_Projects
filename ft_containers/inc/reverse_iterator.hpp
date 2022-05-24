@@ -56,6 +56,18 @@ namespace ft {
 				return (tmp);
 			}
 
+			reverse_iterator operator+(difference_type n)
+			{ return reverse_iterator(_ptr - n); }
+
+			reverse_iterator operator-(difference_type n)
+			{ return reverse_iterator(_ptr + n); }
+
+			reverse_iterator operator+=(difference_type n)
+			{ _ptr -= n; return *this; }
+
+			reverse_iterator operator-=(difference_type n)
+			{ _ptr += n; return *this; }
+
 			pointer operator->()
 			{ return (_ptr); }
 
