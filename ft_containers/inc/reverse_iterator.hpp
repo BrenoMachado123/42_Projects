@@ -22,16 +22,18 @@ namespace ft {
 			reverse_iterator() : _ptr() {}
 			explicit reverse_iterator(iterator_type ptr) : _ptr(ptr) {}
 			reverse_iterator(const reverse_iterator& other) { *this = other; }
+
 			reverse_iterator& operator=(const reverse_iterator& other) {
 				if (this != &other)
 					this->_ptr = other._ptr;
 				return (*this);
 			}
+
 			template <class Iter>
 			reverse_iterator (const reverse_iterator<Iter> & other) : 
-				_ptr(other.base()) {};
+			_ptr(other.base()) {}
 	
-			~reverse_iterator() {};
+			~reverse_iterator() {}
 
 			iterator_type base() const
 			{ return (_ptr); }

@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <typeinfo>
+#include <stdlib.h>
 #include "random_access_iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "enable_if.hpp"
@@ -39,13 +40,11 @@ namespace ft {
 				_alloc(alloc), _size(count), _capacity(count), _buff(pointer())  {
 					if (!count)
 						return ;
-					if (count > max_size()) {
+					if (count > max_size())
 						throw std::length_error("cannot create std::vector larger than max_size()");
-					}
 					_buff = _alloc.allocate(count);
-					for (size_type i = 0; i < _size; i++) { 
+					for (size_type i = 0; i < _size; i++) 
 						_alloc.construct(_buff + i, value);
-					}
 				}
 
 				template <class InputIterator>
@@ -75,12 +74,13 @@ namespace ft {
 
 				// member functions
 
-				void	push_back(const value_type& val ) {
+				void	push_back(const value_type& val) {
 					if (!_capacity && !_size) 
 						_reAlloc(1);
 					else if (_size >= _capacity)
 						_reAlloc(_capacity * 2);
-					_buff[_size++] = val;
+					_alloc.construct(_buff + _size, val);
+					_size++;
 				}
 
 				void	pop_back() {
@@ -95,8 +95,6 @@ namespace ft {
 				}
 
 				void	reserve(size_type n) {
-					if (n > max_size())
-						throw std::length_error("vector::reserve");
 					if (n > _capacity)
 						_reAlloc(n);
 				}
@@ -111,13 +109,13 @@ namespace ft {
 
 				reference at (size_type n) {
 					if (n < 0 || n >= _size)
-						throw std::out_of_range("vector");
+						throw std::out_of_range("vector::at : _index_out_of_range");
 					return (_buff[n]);
 				}
 
 				const_reference at (size_type n) const {
 					if (n < 0 || n >= _size)
-						throw std::out_of_range("vector");
+						throw std::out_of_range("vector::at : _index_out_of_range");
 					return (_buff[n]);
 				}
 
@@ -139,7 +137,7 @@ namespace ft {
 
 				iterator erase(iterator position) {
 					size_type pos = _getRange(begin(), position);
-					_fillErased(pos, size());
+					_Erase(pos, size());
 					_size--;
 					return (position);
 				}
@@ -151,11 +149,9 @@ namespace ft {
 
 					for (size_type i = pos; i < range; i++)
 						_alloc.destroy(_buff + i);
-					size_type next = 0;
-					for (size_type i = pos; i < remains; i++) {
-						value_type val = *(_buff + remains + next);
-						_fillErased(pos, size(), val);
-						next++;
+					for (size_type i = pos; remains > 0; i++) {
+						_setValue(_buff + i, *(_buff + range + i));
+						remains--;
 					}
 					_size -= range;
 					return (first);
@@ -169,8 +165,8 @@ namespace ft {
 
 				iterator insert (iterator position, const value_type& val = value_type() ) {
 					size_type pos = _getRange(begin(), position);
-					if (_size + 1 > _capacity)
-						_reAlloc(_size * 2);
+					if (_size + 1 >= _capacity)
+						reserve(_size * 2);
 					_moveElements(pos, 1);
 					_setValue(_buff + pos, val);
 					return (iterator(_buff + pos));
@@ -178,8 +174,8 @@ namespace ft {
 
 				void insert (iterator position, size_type n, const value_type& val = value_type()) {
 					size_type pos = _getRange(begin(), position);
-					if ((_size + n) > _capacity)
-						_reAlloc((_size + n) * 2);
+					if ((_size + n) >= _capacity)
+						reserve(_size * 2);
 					_moveElements(pos, n);
 					for (size_type i = 0; i < n; i++)
 						_setValue((_buff + pos + i) , val);
@@ -191,7 +187,7 @@ namespace ft {
 						size_type pos = _getRange(begin(), position);
 						size_type range = last - first;
 						if (range >= _capacity)
-							_reAlloc(range + _size);
+							reserve(range + _size);
 						_moveElements(pos, range);
 						for (size_type i = 0; i < range; first++, i++)
 							_setValue((_buff + pos + i) , *first);
@@ -214,17 +210,17 @@ namespace ft {
 
 				vector& operator=(const vector& other) {
 					if (this != &other) {
-						if (_capacity >= other._size) {
-							clear()
-							_alloc.deallocate(_buff, _capacity);
-							_capacity = other.capacity();	
+						if (_capacity < other._size) {
+							clear();
+							_alloc.deallocate(_buff, _capacity);	
 							_buff = _alloc.allocate(other._size);
 						}
-						else
+						else 
 							clear();
 						for (size_type i = 0; i < other._size; i++)
 							_alloc.construct(_buff + i, other.at(i));
 						_size = other.size();
+						_capacity = other.capacity();
 					}
 					return *this;
 				}
@@ -276,7 +272,7 @@ namespace ft {
 				size_type capacity() const
 				{ return _capacity; }
 
-				bool empty()
+				bool empty() const
 				{ return (_size == 0); }
 
 
@@ -284,6 +280,8 @@ namespace ft {
 				//reallocate the vector capacity; 
 				void	_reAlloc(size_type newCapacity, bool cap_change = true) {
 					pointer newPtr;
+					if (newCapacity > max_size())
+						throw std::length_error("vector::reserve");
 					newPtr = _alloc.allocate(newCapacity);
 					if (newCapacity < _size)
 						_size = newCapacity;
@@ -298,7 +296,7 @@ namespace ft {
 				}
 
 				//set a new value to a element in vector;
-				void	_setValue(pointer element, value_type val = value_type() ) {
+				void	_setValue(pointer element, value_type val) {
 					_alloc.destroy(element);
 					_alloc.construct(element, val);
 				}
@@ -311,15 +309,11 @@ namespace ft {
 					insert(end(), range, val);
 				}
 
-
 				//fill the blank spaces left by erase function with the next value;
-				void	_fillErased(size_type start, size_type end, value_type fill = value_type()) {
-					if (fill != value_type()) {
-						_setValue(_buff + start, fill);
-						return ;
-					}
+				//void	_Erase(size_type start, size_type end, value_type& fill)
+				void	_Erase(size_type start, size_type end) {
 					for (size_type i = start; i < end; i++) {
-						size_type next = i + 1;	
+						size_type next = i + 1;
 						_alloc.destroy(_buff + i);
 						_alloc.construct(_buff + i,  *(_buff + next));
 					}
@@ -361,7 +355,7 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size())
-			return (ft::equal(lhs.begin(), lhs.end()), rhs.begin());
+			return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 		return (false);
 	}
 
@@ -375,7 +369,7 @@ namespace ft {
 
 	template <class T, class Alloc>
 	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-	{ return (!(lhs < rhs)); }
+	{ return (!(rhs < lhs)); }
 
 	template <class T, class Alloc>
 	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
@@ -383,7 +377,7 @@ namespace ft {
 
 	template <class T, class Alloc>
 	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-	{ return (!(lhs > rhs)); }
+	{ return (!(rhs > lhs)); }
 }
 
 #endif

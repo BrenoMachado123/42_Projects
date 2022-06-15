@@ -5,15 +5,15 @@
 #include "./binary_search_tree.hpp"
 #include "ft_pair.hpp"
 
-template<class Key, class Val>
+template<class T>
 class BSTIter_const_rev;
 
 namespace ft {
-    template <class Key, class Val>
+    template <class T>
         class BSTIter_rev {
             public:
-                typedef ft::pair<Key, Val>  value_type;
-                typedef ft::pair<Key, Val>& reference;
+                typedef T  value_type;
+                typedef T& reference;
                 typedef ft::BstNode<value_type>* pointer;
                 typedef typename std::ptrdiff_t difference_type;
                 typedef typename std::bidirectional_iterator_tag iterator_category;
@@ -44,11 +44,11 @@ namespace ft {
                     return (!(_bstRevPtr == other._bstRevPtr));
                 }
 
-                bool operator==(const BSTIter_const_rev<Key,Val>& other) {
+                bool operator==(const BSTIter_const_rev<T>& other) {
                     return (_bstRevPtr == other._bstRevPtr);
                 }
 
-                bool operator!=(const BSTIter_const_rev<Key,Val>& other) {
+                bool operator!=(const BSTIter_const_rev<T>& other) {
                     return (!(_bstRevPtr == other._bstRevPtr));
                 }
 
@@ -114,11 +114,11 @@ namespace ft {
                 pointer _bstRevPtr;
         };
 
-    template <class Key, class Val>
+    template <class T>
         class BSTIter_const_rev {
             public:
-                typedef ft::pair<Key, Val>  value_type;
-                typedef ft::pair<Key, Val>& reference;
+                typedef T  value_type;
+                typedef T& reference;
                 typedef ft::BstNode<value_type>* pointer;
                 typedef typename std::ptrdiff_t difference_type;
                 typedef typename std::bidirectional_iterator_tag iterator_category;
@@ -127,8 +127,8 @@ namespace ft {
                 BSTIter_const_rev(pointer ptr) : _bstRevPtr(ptr) {}
 			    BSTIter_const_rev(const BSTIter_const_rev& other)
                 { *this = other; }
-                BSTIter_const_rev(const BSTIter_rev<Key,Val>& other)
-                { _bstRevPtr = other._bstPtr; }
+                BSTIter_const_rev(const BSTIter_rev<T>& other)
+                { _bstRevPtr = other._bstRevPtr; }
 
 			    BSTIter_const_rev& operator=(const BSTIter_const_rev& other) {
 				    if (this != &other)
@@ -151,11 +151,11 @@ namespace ft {
                     return (!(_bstRevPtr == other._bstRevPtr));
                 }
 
-                bool operator==(const BSTIter_rev<Key,Val>& other) {
+                bool operator==(const BSTIter_rev<T>& other) {
                     return (_bstRevPtr == other._bstRevPtr);
                 }
 
-                bool operator!=(const BSTIter_rev<Key,Val>& other) {
+                bool operator!=(const BSTIter_rev<T>& other) {
                     return (!(_bstRevPtr == other._bstRevPtr));
                 }
 

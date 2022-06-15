@@ -5,27 +5,10 @@
 #include "ft_pair.hpp"
 #include <stdexcept>
 #include <stdlib.h>
+#include "BstNode_structure.hpp"
 
 namespace ft {
-	template<class T>
-		struct BstNode {
-			typedef T type;
-
-			BstNode() : 
-			data(type()), left(NULL), right(NULL), parent(NULL) {}
-
-			BstNode(type data) :
-			data(data), left(NULL), right(NULL), parent(NULL) {}
-
-			type data;
-			BstNode* left;
-			BstNode* right;
-			BstNode* parent;
-		};
-};
-
-namespace ft {
-	template<class T, class BSTNodeType = BstNode<T>, class BSTNodeAlloc = std::allocator<BstNode<T> >, class DefaultAlloc = std::allocator<T> >
+	template<class T, class DefaultAlloc = std::allocator<T>, class BSTNodeType = BstNode<T>, class BSTNodeAlloc = std::allocator< BstNode<T> > >
 		class BST {
 			typedef T value_type;
 			typedef BSTNodeType BSTNode;
@@ -35,105 +18,121 @@ namespace ft {
 
 			public:
 				BST() :
-				_root(NULL), _allocNode(node_allocator_type()), _alloc(allocator_type()), _size(0), _rootNode(false) {}
+				_tree(),
+				_root(nihil_ptr()),
+				_allocNode(node_allocator_type()), 
+				_alloc(allocator_type()), 
+				_size(0), 
+				_treeNode(true) {}
 
 				BST(const BST& other)
 				{*this = other; }
 
 				BST& operator=(const BST& other) {
 					if (this != &other) {
-						_deleteAllNode(_root);
-						BSTNode* tmp = other._root;
+						clear();
+						BSTNode* tmp = other._tree;
 						this->insert(tmp->data);
-						tmp = _findMin(other._root);
-						while (tmp != _findMax(other._root)) {
-							this->insert(tmp->data);
+						tmp = _findMin(other._tree);
+						while (tmp != NULL) {
+							if (tmp != other._root)
+								this->insert(tmp->data);
 							tmp = _nodeNext(tmp);
 						}
 					}
 					return *this;
 				}
 
-				~BST()
-				{ _deleteAllNode(_root); }
+				~BST() { 
+					clear();
+					_deallocNode(_root);
+				}
 
-				void insert(value_type key)
-				{ _root = _insertNode(_root, key); }
+				void insert(const value_type& key)
+				{ _tree = _insertNode(_tree, key); }
 
-				void insert_pos(BSTNode* node, value_type key) {
-					BSTNode* tmp = _root;
+				void insert_pos(BSTNode* node, const value_type& key) {
+					BSTNode* tmp = _tree;
 					if (node)
-						_root = _insertNode(node, key);
-					_root = _searchItem(tmp, tmp->data);
+						_tree = _insertNode(node, key);
+					_tree = _searchItem(tmp, tmp->data);
 					_size++;
 				}
 
 				void inorder()
-				{ _inorderNode(_root); }
+				{ _inorderNode(_tree); }
 
-				BSTNode* min()
-				{ return _findMin(_root); }
 
-				BSTNode* max()
-				{ return _findMax(_root); }
+				BSTNode* min() const
+				{ return _findMin(_tree); }
 
-				void deleteNode(value_type item) {
-					if (item == getEnd()->data) {
-						std::cerr << "free() : invalid pointer" << std::endl;
-						std::abort();
-					}
-					_root = _deleteNode(_root, item);
+
+				BSTNode* max() const
+				{ return _findMax(_tree); }
+
+				void deleteNode(const value_type& item) {
+					_tree = _deleteNode(_tree, item);
 					_size--;
 				}
 
-				BSTNode * getEnd() { 
+				BSTNode* getEnd() const { 
 					if (isEmpty())
 						return NULL;
-					return _root->parent;
+					return _root;
 				}
 
-				bool isEmpty() 
-				{ return (_root == NULL); }
+				bool isEmpty() const
+				{ return (_tree == NULL); }
 
 				BSTNode* next()
-				{ return (nodeNext(_searchItem(_root->data))); }
+				{ return (nodeNext(_searchItem(_tree->data))); }
 
 				BSTNode* prev()
-				{ return (nodePrev(_searchItem(_root->data))); }
-
-				BSTNode* search(const value_type& key)
-				{ return _searchItem(_root, key); }
+				{ return (nodePrev(_searchItem(_tree->data))); }
 
 				BSTNode* search(const value_type& key) const
-				{ return _searchItem(_root, key); }
+				{ return _searchItem(_tree, key); }
 
 				void clear() {
-					_deleteAllNode(_root);
-					_root = NULL;
+					_deleteAllNode(_tree);
+					_tree = NULL;
 				}
 
-				size_type getSize()
-				{ return _size; } 
+				size_type getSize() const
+				{ return _size; }
+
+				size_type maxSize() const
+				{ return (_allocNode.max_size()); }
 
 			private:
-				BSTNode* createNode(value_type key) {
+				BSTNode* nihil_ptr() {
+					value_type emptyData;
+					BSTNode* node = _allocNode.allocate(1);
+					_alloc.construct(&node->data, emptyData);
+					node->left = NULL;
+					node->right = NULL;
+					node->parent = NULL;
+					node->empty = true;
+					return node;
+				}
+
+				BSTNode* createNode(const value_type& key) {
 					BSTNode* tmp = _allocNode.allocate(1);
-					tmp->data = key;
 					_alloc.construct(&tmp->data, key);
 					tmp->left = NULL;
 					tmp->right = NULL;
-					if (_rootNode == false) {
-						_rootNode = true;
-						tmp->parent = _allocNode.allocate(1); 
-						tmp->parent->data = value_type(0,0);
+					if (_treeNode) {
+						tmp->parent = _root;
+						_treeNode = false;
 					}
 					else
 						tmp->parent = NULL;
+					tmp->empty = false;
 					_size++;
 					return tmp;
 				}
 
-				BSTNode* _insertNode(BSTNode* node, value_type key) {
+				BSTNode* _insertNode(BSTNode* node, const value_type& key) {
 					if (node == NULL)
 						return createNode(key);
 					if (key.first < node->data.first) {
@@ -168,19 +167,18 @@ namespace ft {
 						else
 							std::cout << "no right node" << std::endl;
 					}
+					std::cout << "BST {end}" << std::endl;
 				}
 
 				void	_deleteAllNode(BSTNode* node) {
 					if (!node)
 						return ;
-					if (node->parent->data == value_type(0,0)) {
-						_deallocNode(node->parent);
-					}
 					_deleteAllNode(node->left);
 					_deleteAllNode(node->right);
 					_deallocNode(node);
-					_size--;
-					_rootNode = false;
+					if (_size > 0)
+						_size--;
+					_treeNode = true;
 				}
 
 				BSTNode* _getFilledBranch(BSTNode* node) {
@@ -205,7 +203,7 @@ namespace ft {
 							else if (!node->left or !node->right) {
 								BSTNode* tmp = _getFilledBranch(node);
 								tmp->parent = node->parent;
-								if (node->parent == _root->parent)
+								if (node->parent == _tree->parent)
 									_deallocNode(node->parent);
 								_deallocNode(node);
 								return (tmp);
@@ -218,22 +216,9 @@ namespace ft {
 					return node;
 				}
 
-				BSTNode* _searchItem(BSTNode* node, const value_type& item) {
-					if (!node)
-						return(NULL);
-					BSTNode* tmp = _findMin(node);
-					while (tmp) {
-						if (tmp->data.first == item.first) {
-							return tmp;
-						}
-						tmp = _nodeNext(tmp);
-					}
-					return _root->parent;
-				}
-
 				BSTNode* _searchItem(BSTNode* node, const value_type& item) const {
 					if (!node)
-						return(NULL);
+						return NULL;
 					BSTNode* tmp = _findMin(node);
 					while (tmp) {
 						if (tmp->data.first == item.first) {
@@ -244,30 +229,12 @@ namespace ft {
 					return NULL;
 				}
 
-				BSTNode* _findMin(BSTNode* node) {
-					if (!node)
-						return NULL;
-					BSTNode* currentNode = node;
-					while (currentNode->left != NULL)
-						currentNode = currentNode->left;
-					return currentNode;
-				}
-
 				BSTNode* _findMin(BSTNode* node) const {
 					if (!node)
 						return NULL;
 					BSTNode* currentNode = node;
 					while (currentNode->left != NULL)
 						currentNode = currentNode->left;
-					return currentNode;
-				}
-
-				BSTNode* _findMax(BSTNode* node) {
-					if (!node)
-						return NULL;
-					BSTNode* currentNode = node;
-					while (currentNode->right != NULL)
-						currentNode = currentNode->right;
 					return currentNode;
 				}
 
@@ -286,17 +253,6 @@ namespace ft {
 					node = NULL;
 				}
 
-				BSTNode* _nodeNext(BSTNode* node) {
-					BSTNode* ptr = node;
-                    if (ptr->right and ptr->right->parent)
-                        return _findMin(ptr->right);
-                    BSTNode* tmp = ptr->parent;
-                    while (tmp and ptr == tmp->right) {
-                        ptr = tmp;
-                        tmp = tmp->parent;
-                    }
-                    return tmp;
-				}
 
 				BSTNode* _nodeNext(BSTNode* node) const {
 					BSTNode* ptr = node;
@@ -305,17 +261,6 @@ namespace ft {
                     BSTNode* tmp = ptr->parent;
                     while (tmp and ptr == tmp->right) {
                         ptr = tmp;
-                        tmp = tmp->parent;
-                    }
-                    return tmp;
-				}
-
-				BSTNode* _nodePrev(BSTNode* node) {
-                    if (node->left and node->left->parent)
-                        return _findMax(node->left);
-                    BSTNode* tmp = node->parent;
-                    while (tmp and node == tmp->left) {
-                        node = tmp;
                         tmp = tmp->parent;
                     }
                     return tmp;
@@ -332,12 +277,19 @@ namespace ft {
                     return tmp;
 				}
 
+				void _abortInvalidPtr() {
+					this->~BST();
+					std::cerr << "free() : invalid pointer" << std::endl;
+					std::abort();
+				}
+
 			protected:
+				BSTNode* _tree;
 				BSTNode* _root;
 				node_allocator_type _allocNode;
 				allocator_type _alloc;
 				size_type _size;
-				bool _rootNode;
+				bool _treeNode;
 		};
 		
 }
