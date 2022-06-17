@@ -7,8 +7,9 @@ void VSpeedTest() {
     double total;
 
     start = clock();
-    for (int i = 0; i < 1000000000; i++) {
-        v.push_back(0);
+    for (int i = 0; i < 100000; i++) {
+         std::cout << "inserting element: " << i << std::endl; 
+        v.push_back(i);
     }
     end = clock();
     total = (double)(end - start) / CLOCKS_PER_SEC;

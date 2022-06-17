@@ -2,7 +2,7 @@
 
 void VectorTests() {
     int select;
-    std::cout << "Vector\n[0] Construction\n[1] Member_functions\n[2] Iterators\n[3] Relational Operators\n[4] Speed test";
+    std::cout << "Vector\n[0] Construction\n[1] Member_functions\n[2] Iterators\n[3] Relational Operators\n[4] Speed test\n";
     std::cin >> select;
     switch (select) {
         case 0:
@@ -28,7 +28,7 @@ void VectorTests() {
 
 void MapTests() {
     int select;
-    std::cout << "Map\n[0] Construction\n[1] Member_functions\n[2] Iterators\n[3] Relational Operators\n[4] Speed test\n[5] Undefined Behaviors";
+    std::cout << "Map\n[0] Construction\n[1] Member_functions\n[2] Iterators\n[3] Relational Operators\n[4] Speed test\n";
     std::cin >> select;
     switch (select) {
         case 0:
@@ -46,8 +46,25 @@ void MapTests() {
         case 4:
             MapSpeed();
             break ;
-        case 5:
-            MapUndefinedBehaviors();
+        default:
+            std::cout << "!" << std::endl;
+            break;
+    }
+}
+
+void StackTests() {
+    int select;
+    std::cout << "Map\n[0] Construction\n[1] Member_functions\n[2] Relational Operators\n";
+    std::cin >> select;
+    switch (select) {
+        case 0:
+            StackConstruction();
+            break;
+        case 1:
+            StackMemberFunctions();
+            break;
+        case 2:
+            StackRelationalOperators();
             break ;
         default:
             std::cout << "!" << std::endl;
@@ -58,7 +75,7 @@ void MapTests() {
 int main() {
     int select;
 
-    std::cout << "[0] Vector\n[1] Map" << std::endl;
+    std::cout << "[0] Vector\n[1] Map\n[2] Stack\n" << std::endl;
     std::cin >> select;
     switch (select)
     {
@@ -67,6 +84,9 @@ int main() {
             break;
         case 1:
             MapTests();
+            break ;
+        case 2:
+            StackTests();
             break ;
     
         default:

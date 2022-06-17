@@ -65,9 +65,8 @@ namespace ft {
 				//member functions
 
 				ft::pair<iterator,bool> insert (const value_type& val) {
-					iterator itr = _tree.search(val);
-					bool ret = (itr == _tree.getEnd());
-					_tree.insert(val);
+					iterator itr = iterator(_tree.insert(val));
+					bool ret = !(_tree.isNodeRepeated());
 					return (ft::make_pair(itr,  ret));
 				}
 

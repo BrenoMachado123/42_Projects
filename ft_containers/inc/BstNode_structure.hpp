@@ -7,10 +7,10 @@ namespace ft {
 			typedef T type;
 
 			BstNode() : 
-			data(type()),left(NULL), right(NULL), parent(NULL), empty(true) {}
+			data(type()),left(NULL), right(NULL), parent(NULL) {}
 
 			BstNode(type data) :
-			data(data), left(NULL), right(NULL), parent(NULL), empty(true) {}
+			data(data), left(NULL), right(NULL), parent(NULL) {}
 
             BstNode& operator=(const BstNode& other) {
                 if (this != &other) {
@@ -18,7 +18,6 @@ namespace ft {
                     left = other.left;
                     right = other.right;
                     parent = other.parent;
-                    empty = other.empty;
                 }
 				return *this;
             }
@@ -27,7 +26,6 @@ namespace ft {
 			BstNode* left;
 			BstNode* right;
 			BstNode* parent;
-			bool empty;
 		};
 }
 

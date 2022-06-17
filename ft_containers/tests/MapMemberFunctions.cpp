@@ -24,13 +24,12 @@ void mapMemberFunctions() {
     // insert
     iterator it;
     container::map<std::string, int> m;
-    PrintMap(m,it);
+    //PrintMap(m,it);
     m.insert( pair_type("Root", 0) );
     check_type b = m.insert( pair_type("Root", 2) );
     if (!b.second)
         std::cout << "The key " << b.first->first << " with value " << b.first->second << " already belongs to BST" << std::endl;
     PrintMap(m, it);
-
     m.insert(m.begin(),pair_type("Branch A", 1) ); // max efficiency inserting
     iterator get = m.insert(m.begin(),pair_type("Branch B", 2) ); // no efficiency inserting
     m.insert( pair_type("Branch C", 3) );
@@ -39,6 +38,8 @@ void mapMemberFunctions() {
     m.insert( pair_type("branch F", 6) );
     std::cout << "returning iterator : "<< get->first << " => " << get->second << std::endl;
     PrintMap(m, it);
+
+    return ;
 
     container::map<std::string, int> m2;
     m2.insert(m.begin(), m.find("Root"));

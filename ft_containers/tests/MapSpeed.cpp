@@ -6,7 +6,8 @@ void MapSpeed() {
     double total;
 
     start = clock();
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 100000; i++) {
+        std::cout << "inserting pair <" << i << " " << i << " >" << std::endl; 
         m.insert( container::make_pair(i,i) );
     }
     end = clock();

@@ -14,6 +14,7 @@ void MapIterators() {
     m.insert( pair_type("test2", 2) );
     m.insert( pair_type("test3", 3) );
     m.insert( pair_type("test4", 4) );
+    m.insert( pair_type("test5", 5) );
 
     itr = m.begin();
     const_itr = m.begin();

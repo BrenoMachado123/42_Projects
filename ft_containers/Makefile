@@ -13,10 +13,12 @@ SRC =	tests/VectorConstruction.cpp \
 		tests/VecSpeed.cpp \
 		tests/MapConstruction.cpp \
 		tests/MapMemberFunctions.cpp \
-		tests/MapUndefinedBehaviors.cpp \
 		tests/MapRelationalOperators.cpp \
 		tests/MapIterators.cpp \
 		tests/MapSpeed.cpp \
+		tests/StackConstruction.cpp \
+		tests/StackMemberFunctions.cpp \
+		tests/StackRelationalOperators.cpp \
 		tests/main.cpp \
 
 STD_OBJS_DIR = std_objs

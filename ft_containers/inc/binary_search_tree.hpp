@@ -23,7 +23,8 @@ namespace ft {
 				_allocNode(node_allocator_type()), 
 				_alloc(allocator_type()), 
 				_size(0), 
-				_treeNode(true) {}
+				_treeNode(true),
+				nodeRepeated(false) {}
 
 				BST(const BST& other)
 				{*this = other; }
@@ -48,8 +49,12 @@ namespace ft {
 					_deallocNode(_root);
 				}
 
-				void insert(const value_type& key)
-				{ _tree = _insertNode(_tree, key); }
+				BSTNode* insert(const value_type& key)
+				{
+					nodeRepeated = false;
+					_tree = _insertNode(_tree, key);
+					return _tree;
+				}
 
 				void insert_pos(BSTNode* node, const value_type& key) {
 					BSTNode* tmp = _tree;
@@ -104,6 +109,10 @@ namespace ft {
 				size_type maxSize() const
 				{ return (_allocNode.max_size()); }
 
+				bool isNodeRepeated() {
+					return nodeRepeated;
+				}
+
 			private:
 				BSTNode* nihil_ptr() {
 					value_type emptyData;
@@ -112,7 +121,6 @@ namespace ft {
 					node->left = NULL;
 					node->right = NULL;
 					node->parent = NULL;
-					node->empty = true;
 					return node;
 				}
 
@@ -127,7 +135,6 @@ namespace ft {
 					}
 					else
 						tmp->parent = NULL;
-					tmp->empty = false;
 					_size++;
 					return tmp;
 				}
@@ -135,7 +142,7 @@ namespace ft {
 				BSTNode* _insertNode(BSTNode* node, const value_type& key) {
 					if (node == NULL)
 						return createNode(key);
-					if (key.first < node->data.first) {
+					/*if (key.first < node->data.first) {
 						BSTNode* lchild = _insertNode(node->left, key);
 						node->left = lchild;
 						lchild->parent = node;
@@ -143,6 +150,28 @@ namespace ft {
 						BSTNode* rchild = _insertNode(node->right, key);
 						node->right = rchild;
 						rchild->parent = node;
+					}*/
+
+					BSTNode* current = node;
+					BSTNode* tmp = NULL;
+					while (current) {
+						tmp = current;
+						if (current->data.first < key.first)
+							current = current->right;
+						else if ( current->data.first > key.first )
+							current = current->left;
+						else {
+							nodeRepeated = true;
+							return current;
+						}
+					}
+
+					if (tmp->data.first > key.first) {
+						tmp->left = createNode(key);
+						tmp->left->parent = tmp;
+					} else if (tmp->data.first < key.first) {
+						tmp->right = createNode(key);
+						tmp->right->parent = tmp;
 					}
 					return node;
 				}
@@ -282,7 +311,6 @@ namespace ft {
 					std::cerr << "free() : invalid pointer" << std::endl;
 					std::abort();
 				}
-
 			protected:
 				BSTNode* _tree;
 				BSTNode* _root;
@@ -290,6 +318,7 @@ namespace ft {
 				allocator_type _alloc;
 				size_type _size;
 				bool _treeNode;
+				bool nodeRepeated;
 		};
 		
 }

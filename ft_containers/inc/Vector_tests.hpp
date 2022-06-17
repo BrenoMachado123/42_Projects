@@ -26,7 +26,10 @@ void MapConstruction();
 void mapMemberFunctions();
 void MapIterators();
 void MapRelationalOperators();
-void MapUndefinedBehaviors();
 void MapSpeed();
+
+void StackConstruction();
+void StackMemberFunctions();
+void StackRelationalOperators();
 
 #endif
