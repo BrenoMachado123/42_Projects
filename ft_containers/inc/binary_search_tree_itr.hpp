@@ -36,21 +36,17 @@ namespace ft {
                 value_type& operator*() const
                 { return _bstPtr->data; }
                 
-                bool operator==(const BSTIter& other) {
-                    return (_bstPtr == other._bstPtr);
-                }
+                bool operator==(const BSTIter& other)
+                { return (_bstPtr == other._bstPtr); }
 
-                bool operator!=(const BSTIter& other) {
-                    return (!(_bstPtr == other._bstPtr));
-                }
+                bool operator!=(const BSTIter& other)
+                { return (!(_bstPtr == other._bstPtr)); }
 
-                 bool operator==(const BSTIter_const<T>& other) {
-                    return (_bstPtr == other._bstPtr);
-                }
+                bool operator==(const BSTIter_const<T>& other)
+                { return (_bstPtr == other._bstPtr); }
 
-                bool operator!=(const BSTIter_const<T>& other) {
-                    return (!(_bstPtr == other._bstPtr));
-                }
+                bool operator!=(const BSTIter_const<T>& other)
+                { return (!(_bstPtr == other._bstPtr)); }
 
                 BSTIter operator++() {
                     _bstPtr = _nodeNextItr(_bstPtr);
@@ -144,21 +140,17 @@ namespace ft {
                 value_type& operator*() const
                 { return _bstPtr->data; }
                 
-                bool operator==(const BSTIter_const& other) {
-                    return (_bstPtr == other._bstPtr);
-                }
+                bool operator==(const BSTIter_const& other) 
+                { return (_bstPtr == other._bstPtr); }
 
-                bool operator!=(const BSTIter_const& other) {
-                    return (!(_bstPtr == other._bstPtr));
-                }
+                bool operator!=(const BSTIter_const& other)
+                { return (!(_bstPtr == other._bstPtr)); }
 
-                bool operator==(const BSTIter<T>& other) {
-                    return (_bstPtr == other._bstPtr);
-                }
+                bool operator==(const BSTIter<T>& other)
+                { return (_bstPtr == other._bstPtr); }
 
-                bool operator!=(const BSTIter<T>& other) {
-                    return (!(_bstPtr == other._bstPtr));
-                }
+                bool operator!=(const BSTIter<T>& other)
+                { return (!(_bstPtr == other._bstPtr)); }
 
                 BSTIter_const operator++() {
                     _bstPtr = _nodeNextItr(_bstPtr);

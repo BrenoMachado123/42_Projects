@@ -76,7 +76,7 @@ namespace ft {
 				{ return _findMax(_tree); }
 
 				void deleteNode(const value_type& item) {
-					_tree = _deleteNode(_tree, item);
+					_deleteNode(search(item));
 					_size--;
 				}
 
@@ -87,7 +87,7 @@ namespace ft {
 				}
 
 				bool isEmpty() const
-				{ return (_tree == NULL); }
+				{ return (!_size); }
 
 				BSTNode* next()
 				{ return (nodeNext(_searchItem(_tree->data))); }
@@ -99,6 +99,8 @@ namespace ft {
 				{ return _searchItem(_tree, key); }
 
 				void clear() {
+					if (!_size)
+						return ;
 					_deleteAllNode(_tree);
 					_tree = NULL;
 				}
@@ -109,9 +111,8 @@ namespace ft {
 				size_type maxSize() const
 				{ return (_allocNode.max_size()); }
 
-				bool isNodeRepeated() {
-					return nodeRepeated;
-				}
+				bool isNodeRepeated()
+				{ return nodeRepeated; }
 
 			private:
 				BSTNode* nihil_ptr() {
@@ -142,30 +143,19 @@ namespace ft {
 				BSTNode* _insertNode(BSTNode* node, const value_type& key) {
 					if (node == NULL)
 						return createNode(key);
-					/*if (key.first < node->data.first) {
-						BSTNode* lchild = _insertNode(node->left, key);
-						node->left = lchild;
-						lchild->parent = node;
-					} else if (key.first > node->data.first) {
-						BSTNode* rchild = _insertNode(node->right, key);
-						node->right = rchild;
-						rchild->parent = node;
-					}*/
-
 					BSTNode* current = node;
 					BSTNode* tmp = NULL;
 					while (current) {
 						tmp = current;
 						if (current->data.first < key.first)
 							current = current->right;
-						else if ( current->data.first > key.first )
+						else if (current->data.first > key.first)
 							current = current->left;
 						else {
 							nodeRepeated = true;
 							return current;
 						}
 					}
-
 					if (tmp->data.first > key.first) {
 						tmp->left = createNode(key);
 						tmp->left->parent = tmp;
@@ -210,52 +200,55 @@ namespace ft {
 					_treeNode = true;
 				}
 
-				BSTNode* _getFilledBranch(BSTNode* node) {
-					if (!node->left and node->right)
-						return node->right;
-					else if (node->left and !node->right)
-						return node->left;
-					return NULL;
+				void _transplant(BSTNode*& root, BSTNode* target, BSTNode* branch) {
+					if (target == NULL) {
+						return ;
+					}
+					else if (!target->parent)
+						root = branch;
+					else if (target->parent->left == target)
+						target->parent->left = branch;
+					else
+						target->parent->right = branch;
+					if (branch != NULL)
+						branch->parent = target->parent;
 				}
 
-				BSTNode* _deleteNode(BSTNode* node, value_type item) {
-					if (node) {
-						if (item.first < node->data.first)
-						   node->left = _deleteNode(node->left, item);
-						else if (item.first > node->data.first)
-							node->right = _deleteNode(node->right, item);
-						else {
-							if (!node->left and !node->right) {
-								_deallocNode(node);
-								return (NULL);
-							}
-							else if (!node->left or !node->right) {
-								BSTNode* tmp = _getFilledBranch(node);
-								tmp->parent = node->parent;
-								if (node->parent == _tree->parent)
-									_deallocNode(node->parent);
-								_deallocNode(node);
-								return (tmp);
-							}
-							BSTNode* minValueNode = _findMin(node->right);
-							node->data = item = minValueNode->data;
-							node->right = _deleteNode(node->right, item);
-						}
+				BSTNode* _deleteNode(BSTNode* node) {
+					if (!node)
+						return _tree;
+					if (!node->left) {
+						_transplant(_tree, node, node->right);
 					}
-					return node;
+					else if (!node->right) {
+						_transplant(_tree, node, node->left);
+					}
+					else {
+						BSTNode* nextNode = _nodeNext(node);
+						if (node->right != nextNode) {
+							_transplant(_tree, nextNode, nextNode->right);
+							nextNode->right = node->right;
+							nextNode->right->parent = nextNode;
+						}
+						_transplant(_tree, node, nextNode);
+        				nextNode->left = node->left;
+        				nextNode->left->parent = nextNode;
+					}
+					_deallocNode(node);
+					return _tree;
 				}
 
 				BSTNode* _searchItem(BSTNode* node, const value_type& item) const {
 					if (!node)
 						return NULL;
-					BSTNode* tmp = _findMin(node);
-					while (tmp) {
-						if (tmp->data.first == item.first) {
-							return tmp;
-						}
-						tmp = _nodeNext(tmp);
+					BSTNode* tmp = node;
+					while (tmp and tmp->data.first != item.first) {
+						if (tmp->data.first < item.first)
+							tmp = tmp->right;
+						else if (tmp->data.first > item.first)
+							tmp = tmp->left;
 					}
-					return NULL;
+					return tmp;
 				}
 
 				BSTNode* _findMin(BSTNode* node) const {
@@ -284,6 +277,8 @@ namespace ft {
 
 
 				BSTNode* _nodeNext(BSTNode* node) const {
+					if (!node)
+						return NULL;
 					BSTNode* ptr = node;
                     if (ptr->right and ptr->right->parent)
                         return _findMin(ptr->right);
@@ -296,6 +291,8 @@ namespace ft {
 				}
 
 				BSTNode* _nodePrev(BSTNode* node) const {
+					if (!node)
+						return NULL;
                     if (node->left and node->left->parent)
                         return _findMax(node->left);
                     BSTNode* tmp = node->parent;
@@ -311,6 +308,7 @@ namespace ft {
 					std::cerr << "free() : invalid pointer" << std::endl;
 					std::abort();
 				}
+
 			protected:
 				BSTNode* _tree;
 				BSTNode* _root;

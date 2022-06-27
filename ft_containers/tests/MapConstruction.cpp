@@ -12,7 +12,7 @@ template<typename T, typename InputIterator>
 void MapConstruction() {
     container::map<int, int> a;
     container::map<int,int>::iterator it;
-
+    std::cout << a.max_size() << std::endl;
     PrintMap(a, it);
 
     a.insert( container::pair<int,int>(1,1) );

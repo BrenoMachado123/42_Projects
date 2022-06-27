@@ -2,16 +2,16 @@
 # define __VECTOR_TESTS_HPP__
 
 #ifndef FT
-# define container ft
-#  include <vector.hpp>
-#  include <map.hpp>
-#  include <stack.hpp>
-# define FT 1
-#else
 # define container std
 #  include <vector>
 #  include <map>
 #  include <stack>
+# define FT 1
+#else
+# define container ft
+#  include <vector.hpp>
+#  include <map.hpp>
+#  include <stack.hpp>
 # endif
 
 #include <iostream>

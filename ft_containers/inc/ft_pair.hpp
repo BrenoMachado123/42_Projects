@@ -18,6 +18,16 @@ namespace ft {
 				pair(const pair<U1, U2>& other)
 				: first(other.first), second(other.second) {}
 
+
+			template<class U1, class U2>
+				pair& operator=(const pair<U1, U2>& other) {
+					if (this != &other) {
+						first = other.first;
+						second = other.second;
+					}
+					return *this;
+				}
+
 			pair& operator=(const pair& other) {
 				if (this != &other) {
 					first = other.first;

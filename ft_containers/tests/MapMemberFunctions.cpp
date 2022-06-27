@@ -39,8 +39,6 @@ void mapMemberFunctions() {
     std::cout << "returning iterator : "<< get->first << " => " << get->second << std::endl;
     PrintMap(m, it);
 
-    return ;
-
     container::map<std::string, int> m2;
     m2.insert(m.begin(), m.find("Root"));
     PrintMap(m2, it);
@@ -49,7 +47,9 @@ void mapMemberFunctions() {
 
     //m.erase(m.end());
     m.erase(m.find("Branch B"));
+    std::cout << "TRES" << std::endl; 
     m.erase("Branch A");
+    std::cout << "DUO" << std::endl; 
     m.erase(m.find("branch D"), m.end());
 
     PrintMap(m, it);
@@ -58,7 +58,6 @@ void mapMemberFunctions() {
 
     std::cout << "Branch C exists ? " << (m.count("Branch C") ? "yes" : "no") << std::endl;
     std::cout << "branch D exists ? " << (m.count("branch D") ? "yes" : "no") << std::endl;
-
     // operator[]
     map_type m3;
 

@@ -9,6 +9,7 @@
 #include "reverse_iterator.hpp"
 #include "enable_if.hpp"
 #include "ft_algorithm.hpp"
+#include <string>
 
 
 //https://gcc.gnu.org/onlinedocs/gcc-4.6.3/libstdc++/api/a01115_source.html
@@ -324,12 +325,12 @@ namespace ft {
 					vector copyVector = *this;
 					iterator itr = copyVector.begin() + start;
 					for (size_type i = 0; i < n ;i++)
-						_push();
+						_sizeAlloc();
 					for (size_type i = start + n; i < size(); itr++, i++)
 						_setValue(_buff + i, *itr);
 				}
 
-				void	_push() {
+				void	_sizeAlloc() {
 					if (!_capacity && !_size) 
 						_reAlloc(1);
 					else if (_size >= _capacity)

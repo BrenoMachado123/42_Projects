@@ -12,16 +12,6 @@ namespace ft {
 			BstNode(type data) :
 			data(data), left(NULL), right(NULL), parent(NULL) {}
 
-            BstNode& operator=(const BstNode& other) {
-                if (this != &other) {
-                    data = other.data;
-                    left = other.left;
-                    right = other.right;
-                    parent = other.parent;
-                }
-				return *this;
-            }
-
 			type data;
 			BstNode* left;
 			BstNode* right;

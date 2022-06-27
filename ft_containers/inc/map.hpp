@@ -10,7 +10,7 @@
 #include "ft_pair.hpp"
 
 namespace ft {
-	template<class Key, class T, class Compare= std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
+	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
 		class map {
 			public:
 				//type_defintions
@@ -98,9 +98,10 @@ namespace ft {
 				}
 				
 				size_type erase (const key_type& k) {
-					if (!count(k))
-						return 0;
-					erase(find(k));
+					iterator it = iterator(find(k));
+					if (it == NULL) 
+						return (0);
+					erase(it);
 					return 1;
 				}
 
@@ -149,8 +150,8 @@ namespace ft {
 				{ return _tree.getSize(); }
 
 				size_type count (const key_type& k) const{
-					value_type p = ft::make_pair(k,mapped_type());
-					if (_tree.search((p)))
+					iterator it = iterator(_tree.search(ft::make_pair(k,mapped_type())));
+					if (it != NULL)
 						return 1;
 					return 0;
 				}
@@ -210,15 +211,13 @@ namespace ft {
 					if (this != &other) {
 						_tree = other._tree;
 						_kcmp = other._kcmp;
+						_alloc = other._alloc;
 					}
 					return *this;
 				}
 
 				mapped_type& operator[] (const key_type& k) {
-					if (!count(k)) {
-						value_type p = ft::make_pair(k, mapped_type());
-						insert(p);
-					}
+					insert(ft::make_pair(k, mapped_type()));
 					return find(k)->second;
 				}
 

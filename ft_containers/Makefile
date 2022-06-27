@@ -4,7 +4,7 @@ CC = c++
 
 INC = -I inc
 
-CPPFLAGS = -Wall -Wextra -Werror -std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=leak
 
 SRC =	tests/VectorConstruction.cpp \
 		tests/VecIterators.cpp \
