@@ -75,6 +75,7 @@ void StackTests() {
 int main() {
     int select;
 
+    std::cout << (FT == 42 ? "ft" : "std") << std::endl;  
     std::cout << "[0] Vector\n[1] Map\n[2] Stack\n" << std::endl;
     std::cin >> select;
     switch (select)

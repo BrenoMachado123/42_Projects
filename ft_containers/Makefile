@@ -39,7 +39,7 @@ STYLE='\033[3m'
 
 $(FT_OBJS_DIR)/%.o:tests/%.cpp
 	@mkdir -p $(FT_OBJS_DIR)
-	$(CC)	$(CPPFLAGS) -D FT=1 $(INC) -c $< -o $@
+	$(CC)	$(CPPFLAGS) -D FT=42 $(INC) -c $< -o $@
 	
 $(STD_OBJS_DIR)/%.o:tests/%.cpp
 	@mkdir -p $(STD_OBJS_DIR)

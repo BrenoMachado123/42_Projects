@@ -19,7 +19,7 @@ namespace ft {
 			public:
 				BST() :
 				_tree(),
-				_root(nihil_ptr()),
+				_root(NULL),
 				_allocNode(node_allocator_type()), 
 				_alloc(allocator_type()), 
 				_size(0), 
@@ -46,7 +46,7 @@ namespace ft {
 
 				~BST() { 
 					clear();
-					_deallocNode(_root);
+					//_deallocNode(_root);
 				}
 
 				BSTNode* insert(const value_type& key)
@@ -115,7 +115,7 @@ namespace ft {
 				{ return nodeRepeated; }
 
 			private:
-				BSTNode* nihil_ptr() {
+				/*BSTNode* nihil_ptr() {
 					value_type emptyData;
 					BSTNode* node = _allocNode.allocate(1);
 					_alloc.construct(&node->data, emptyData);
@@ -123,7 +123,7 @@ namespace ft {
 					node->right = NULL;
 					node->parent = NULL;
 					return node;
-				}
+				}*/
 
 				BSTNode* createNode(const value_type& key) {
 					BSTNode* tmp = _allocNode.allocate(1);
@@ -141,9 +141,15 @@ namespace ft {
 				}
 
 				BSTNode* _insertNode(BSTNode* node, const value_type& key) {
-					if (node == NULL)
+					if (node == NULL) {
 						return createNode(key);
-					BSTNode* current = node;
+					}
+					BSTNode* current = search(key);
+					if (current) {
+						nodeRepeated = true;
+						return node;
+					}
+					current = node;
 					BSTNode* tmp = NULL;
 					while (current) {
 						tmp = current;
@@ -151,10 +157,6 @@ namespace ft {
 							current = current->right;
 						else if (current->data.first > key.first)
 							current = current->left;
-						else {
-							nodeRepeated = true;
-							return current;
-						}
 					}
 					if (tmp->data.first > key.first) {
 						tmp->left = createNode(key);
@@ -186,7 +188,6 @@ namespace ft {
 						else
 							std::cout << "no right node" << std::endl;
 					}
-					std::cout << "BST {end}" << std::endl;
 				}
 
 				void	_deleteAllNode(BSTNode* node) {
@@ -200,12 +201,11 @@ namespace ft {
 					_treeNode = true;
 				}
 
-				void _transplant(BSTNode*& root, BSTNode* target, BSTNode* branch) {
-					if (target == NULL) {
+				void _transplant(BSTNode** root, BSTNode* target, BSTNode* branch) {
+					if (!target)
 						return ;
-					}
 					else if (!target->parent)
-						root = branch;
+						*root = branch;
 					else if (target->parent->left == target)
 						target->parent->left = branch;
 					else
@@ -218,19 +218,19 @@ namespace ft {
 					if (!node)
 						return _tree;
 					if (!node->left) {
-						_transplant(_tree, node, node->right);
+						_transplant(&_tree, node, node->right);
 					}
 					else if (!node->right) {
-						_transplant(_tree, node, node->left);
+						_transplant(&_tree, node, node->left);
 					}
 					else {
 						BSTNode* nextNode = _nodeNext(node);
 						if (node->right != nextNode) {
-							_transplant(_tree, nextNode, nextNode->right);
+							_transplant(&_tree, nextNode, nextNode->right);
 							nextNode->right = node->right;
 							nextNode->right->parent = nextNode;
 						}
-						_transplant(_tree, node, nextNode);
+						_transplant(&_tree, node, nextNode);
         				nextNode->left = node->left;
         				nextNode->left->parent = nextNode;
 					}
@@ -242,13 +242,15 @@ namespace ft {
 					if (!node)
 						return NULL;
 					BSTNode* tmp = node;
-					while (tmp and tmp->data.first != item.first) {
+					while (tmp) {
 						if (tmp->data.first < item.first)
 							tmp = tmp->right;
 						else if (tmp->data.first > item.first)
 							tmp = tmp->left;
+						else
+							return tmp;
 					}
-					return tmp;
+					return NULL;
 				}
 
 				BSTNode* _findMin(BSTNode* node) const {
@@ -275,10 +277,9 @@ namespace ft {
 					node = NULL;
 				}
 
-
 				BSTNode* _nodeNext(BSTNode* node) const {
 					if (!node)
-						return NULL;
+						return node;
 					BSTNode* ptr = node;
                     if (ptr->right and ptr->right->parent)
                         return _findMin(ptr->right);
@@ -292,7 +293,7 @@ namespace ft {
 
 				BSTNode* _nodePrev(BSTNode* node) const {
 					if (!node)
-						return NULL;
+						return node;
                     if (node->left and node->left->parent)
                         return _findMax(node->left);
                     BSTNode* tmp = node->parent;

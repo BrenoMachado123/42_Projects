@@ -13,7 +13,9 @@ void MapSpeed() {
         m.insert( container::make_pair(element, i));
     }
     std::cout << "deleting all..." << std::endl;
-    for (int i = 0; i < 1000000; i++) {
+    size_t size = m.size();
+    std::cout << size << std::endl;
+    for (size_t i = 0; i < size; i++) {
         container::map<int,int>::iterator itr = m.begin();
         std::cout << "deleting pair <" << itr->first << " " << itr->second << " >" << std::endl;
         m.erase(itr->first);
