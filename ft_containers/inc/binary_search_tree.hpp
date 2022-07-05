@@ -7,8 +7,11 @@
 #include <stdlib.h>
 #include "BstNode_structure.hpp"
 
+template<class T>
+	struct BstNode;
+
 namespace ft {
-	template<class T, class DefaultAlloc = std::allocator<T>, class BSTNodeType = BstNode<T>, class BSTNodeAlloc = std::allocator< BstNode<T> > >
+	template<class T, class DefaultAlloc = std::allocator<T>, class BSTNodeType = ft::BstNode<T>, class BSTNodeAlloc = std::allocator< BSTNodeType > >
 		class BST {
 			typedef T value_type;
 			typedef BSTNodeType BSTNode;
@@ -19,12 +22,8 @@ namespace ft {
 			public:
 				BST() :
 				_tree(),
-				_root(NULL),
-				_allocNode(node_allocator_type()), 
-				_alloc(allocator_type()), 
 				_size(0), 
-				_treeNode(true),
-				nodeRepeated(false) {}
+				_nodeUnique(false) {}
 
 				BST(const BST& other)
 				{*this = other; }
@@ -36,7 +35,7 @@ namespace ft {
 						this->insert(tmp->data);
 						tmp = _findMin(other._tree);
 						while (tmp != NULL) {
-							if (tmp != other._root)
+							if (tmp != other.getEnd())
 								this->insert(tmp->data);
 							tmp = _nodeNext(tmp);
 						}
@@ -44,14 +43,11 @@ namespace ft {
 					return *this;
 				}
 
-				~BST() { 
-					clear();
-					//_deallocNode(_root);
-				}
+				~BST()
+				{ clear(); }
 
-				BSTNode* insert(const value_type& key)
-				{
-					nodeRepeated = false;
+				BSTNode* insert(const value_type& key) {
+					_nodeUnique = false;
 					_tree = _insertNode(_tree, key);
 					return _tree;
 				}
@@ -80,11 +76,8 @@ namespace ft {
 					_size--;
 				}
 
-				BSTNode* getEnd() const { 
-					if (isEmpty())
-						return NULL;
-					return _root;
-				}
+				BSTNode* getEnd() const
+				{ return NULL; }
 
 				bool isEmpty() const
 				{ return (!_size); }
@@ -111,31 +104,17 @@ namespace ft {
 				size_type maxSize() const
 				{ return (_allocNode.max_size()); }
 
-				bool isNodeRepeated()
-				{ return nodeRepeated; }
+				bool isNodeUnique()
+				{ return _nodeUnique; }
 
 			private:
-				/*BSTNode* nihil_ptr() {
-					value_type emptyData;
-					BSTNode* node = _allocNode.allocate(1);
-					_alloc.construct(&node->data, emptyData);
-					node->left = NULL;
-					node->right = NULL;
-					node->parent = NULL;
-					return node;
-				}*/
-
 				BSTNode* createNode(const value_type& key) {
 					BSTNode* tmp = _allocNode.allocate(1);
 					_alloc.construct(&tmp->data, key);
 					tmp->left = NULL;
 					tmp->right = NULL;
-					if (_treeNode) {
-						tmp->parent = _root;
-						_treeNode = false;
-					}
-					else
-						tmp->parent = NULL;
+					tmp->parent = NULL;
+					tmp->unique = true;
 					_size++;
 					return tmp;
 				}
@@ -146,7 +125,7 @@ namespace ft {
 					}
 					BSTNode* current = search(key);
 					if (current) {
-						nodeRepeated = true;
+						_nodeUnique = current->unique;
 						return node;
 					}
 					current = node;
@@ -198,7 +177,6 @@ namespace ft {
 					_deallocNode(node);
 					if (_size > 0)
 						_size--;
-					_treeNode = true;
 				}
 
 				void _transplant(BSTNode** root, BSTNode* target, BSTNode* branch) {
@@ -312,12 +290,10 @@ namespace ft {
 
 			protected:
 				BSTNode* _tree;
-				BSTNode* _root;
 				node_allocator_type _allocNode;
 				allocator_type _alloc;
 				size_type _size;
-				bool _treeNode;
-				bool nodeRepeated;
+				bool _nodeUnique;
 		};
 		
 }

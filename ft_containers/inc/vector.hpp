@@ -10,6 +10,7 @@
 #include "enable_if.hpp"
 #include "ft_algorithm.hpp"
 #include <string>
+#include <sstream>
 
 
 //https://gcc.gnu.org/onlinedocs/gcc-4.6.3/libstdc++/api/a01115_source.html
@@ -109,14 +110,14 @@ namespace ft {
 				}
 
 				reference at (size_type n) {
-					if (n < 0 || n >= _size)
-						throw std::out_of_range("vector::at : _index_out_of_range");
+					if (!__M__range_check(n))
+						throw std::out_of_range(at_errorMsg(n));
 					return (_buff[n]);
 				}
 
 				const_reference at (size_type n) const {
-					if (n < 0 || n >= _size)
-						throw std::out_of_range("vector::at : _index_out_of_range");
+					if (!__M__range_check(n))
+						throw std::out_of_range(at_errorMsg(n));
 					return (_buff[n]);
 				}
 
@@ -125,8 +126,8 @@ namespace ft {
 						typename enable_if<!is_integral<InputIterator>::value>::type* = 0) {
 						clear();
 						_reAlloc(last - first);
-						while (first != last)
-						{ push_back(*first); first++; } 
+						for (; first != last; first++)
+							push_back(*first);
 				}
 
 				void assign (size_type n, const value_type& val) {
@@ -138,7 +139,7 @@ namespace ft {
 
 				iterator erase(iterator position) {
 					size_type pos = _getRange(begin(), position);
-					_Erase(pos, size());
+					_erase(pos, size());
 					_size--;
 					return (position);
 				}
@@ -278,6 +279,12 @@ namespace ft {
 
 
 			private:
+
+				std::string at_errorMsg(size_type __n) const {
+					std::stringstream ss;
+					ss << "vector::__M__range_check: __n (which is " << __n << ") >= this->size() (which is " << _size << ")";
+					return (ss.str());
+				}
 				//reallocate the vector capacity; 
 				void	_reAlloc(size_type newCapacity, bool cap_change = true) {
 					pointer newPtr;
@@ -311,8 +318,8 @@ namespace ft {
 				}
 
 				//fill the blank spaces left by erase function with the next value;
-				//void	_Erase(size_type start, size_type end, value_type& fill)
-				void	_Erase(size_type start, size_type end) {
+				//void	_erase(size_type start, size_type end, value_type& fill)
+				void	_erase(size_type start, size_type end) {
 					for (size_type i = start; i < end; i++) {
 						size_type next = i + 1;
 						_alloc.destroy(_buff + i);
@@ -341,6 +348,9 @@ namespace ft {
 				//get a range between two iterators;
 				difference_type _getRange(iterator first, iterator last)
 				{ return (last - first); }
+
+				bool __M__range_check(size_type __n) const
+				{ return !(__n < 0 || __n >= _size); }
 
 			protected:
 				allocator_type  _alloc;

@@ -16,7 +16,7 @@ namespace ft {
 				//type_defintions
 				typedef Key key_type;
 				typedef T	mapped_type;
-				typedef ft::pair<key_type, mapped_type> value_type;
+				typedef ft::pair<const key_type, mapped_type> value_type;
 				typedef Compare  key_compare;
 
 				class value_compare
@@ -66,7 +66,7 @@ namespace ft {
 
 				ft::pair<iterator,bool> insert (const value_type& val) {
 					iterator itr = iterator(_tree.insert(val));
-					bool ret = !(_tree.isNodeRepeated());
+					bool ret = !(_tree.isNodeUnique());
 					return (ft::make_pair(itr,  ret));
 				}
 
@@ -75,7 +75,7 @@ namespace ft {
 						_tree.insert(val);
 					}
 					else if (!_isElementRepeated(val)) {
-						_tree.insert_pos(_tree.search(position._bstPtr->data), val);
+						_tree.insert_pos(_tree.search(*position), val);
 					}
 					return (iterator(_tree.search(val)));
 				}
@@ -211,7 +211,6 @@ namespace ft {
 					if (this != &other) {
 						_tree = other._tree;
 						_kcmp = other._kcmp;
-						_alloc = other._alloc;
 					}
 					return *this;
 				}
@@ -232,7 +231,7 @@ namespace ft {
 				{ return _tree.search(key) != _tree.getEnd(); }
 
 			protected:
-				ft::BST<value_type> _tree;
+				ft::BST<value_type, allocator_type> _tree;
 				allocator_type _alloc;
 				key_compare _kcmp;
 		};

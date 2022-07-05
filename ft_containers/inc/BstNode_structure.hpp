@@ -5,17 +5,19 @@ namespace ft {
 	template<class T>
 		struct BstNode {
 			typedef T type;
+			typedef BstNode* pointer;
 
 			BstNode() : 
-			data(type()),left(NULL), right(NULL), parent(NULL) {}
+			data(type()),left(pointer()), right(pointer()), parent(pointer()), unique(false) {}
 
 			BstNode(type data) :
-			data(data), left(NULL), right(NULL), parent(NULL) {}
+			data(data), left(pointer()), right(pointer()), parent(pointer()), unique(false) {}
 
 			type data;
-			BstNode* left;
-			BstNode* right;
-			BstNode* parent;
+			pointer left;
+			pointer right;
+			pointer parent;
+			bool unique;
 		};
 }
 

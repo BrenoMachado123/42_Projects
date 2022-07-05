@@ -23,11 +23,12 @@ SRC =	tests/VectorConstruction.cpp \
 
 STD_OBJS_DIR = std_objs
 
-STD_OBJ =  $(SRC:tests/%.cpp=$(STD_OBJS_DIR)/%.o)
+STD_OBJ =  $(SRC:tests/%.cpp=std_objs/%.o)
+
 
 FT_OBJS_DIR = ft_objs
 
-FT_OBJ = $(SRC:tests/%.cpp=$(FT_OBJS_DIR)/%.o)
+FT_OBJ = $(SRC:tests/%.cpp=ft_objs/%.o)
 
 DEL = rm -rf
 
@@ -37,24 +38,27 @@ GREEN='\033[32m'
 GRAY='\033[2;37m'
 STYLE='\033[3m'
 
-$(FT_OBJS_DIR)/%.o:tests/%.cpp
-	@mkdir -p $(FT_OBJS_DIR)
-	$(CC)	$(CPPFLAGS) -D FT=42 $(INC) -c $< -o $@
-	
-$(STD_OBJS_DIR)/%.o:tests/%.cpp
-	@mkdir -p $(STD_OBJS_DIR)
-	$(CC)	$(CPPFLAGS) $(INC) -c $< -o $@
 
-run: $(STD_OBJ) $(FT_OBJ)
-all: run $(NAME)
+all: compile_ft compile_std
 
-$(NAME):
+compile_std : $(STD_OBJ)
 	@echo $(STYLE)$(YELLOW) ">> Compiling std_$(NAME) <<"$(GRAY)
 	$(CC) $(CPPFLAGS) $(STD_OBJ) -o std_$(NAME)
 	@echo $(NONE)$(STYLE)$(GREEN) "<< std_ $(NAME) compiled >>" $(NONE)
+
+
+compile_ft : $(FT_OBJ)
 	@echo $(STYLE)$(YELLOW) ">> Compiling ft_$(NAME) <<"$(GRAY)
-	$(CC) $(CPPFLAGS) $(FT_OBJ) -o ft_$(NAME) 
+	$(CC) $(CPPFLAGS) $(FT_OBJ) -o ft_$(NAME)
 	@echo $(NONE)$(STYLE)$(GREEN) "<< ft_$(NAME) compiled >>" $(NONE)
+
+$(FT_OBJS_DIR)/%.o:tests/%.cpp
+	@mkdir -pv $(FT_OBJS_DIR)
+	$(CC)	$(CPPFLAGS) -D FT=42 $(INC) -c $< -o $@
+	
+$(STD_OBJS_DIR)/%.o:tests/%.cpp
+	@mkdir -pv $(STD_OBJS_DIR)
+	$(CC)	$(CPPFLAGS) $(INC) -c $< -o $@
 
 clean:
 	@echo $(STYLE)$(YELLOW) ">> Deleting files <<"$(NONE)
@@ -69,4 +73,4 @@ re:
 	@echo $(STYLE)$(YELLOW) ">> Recompiling std_$(NAME) <<" $(NONE)
 	@make fclean all
 
-.PHONY : run all re
+.PHONY : all re compile_std compile_ft clean fclean

@@ -23,6 +23,9 @@ namespace ft {
 			    BSTIter(const BSTIter& other)
                 { *this = other; }
 
+                pointer base() const
+                { return _bstPtr; }
+
 			    BSTIter& operator=(const BSTIter& other) {
 				    if (this != &other)
 				    	this->_bstPtr = other._bstPtr;
@@ -106,7 +109,7 @@ namespace ft {
                     return tmp;
 				}
 
-            public:
+            private:
                 pointer _bstPtr;
         };
 
@@ -124,8 +127,11 @@ namespace ft {
 			    BSTIter_const(const BSTIter_const& other)
                 { *this = other; }
 
+                pointer base() const
+                { return _bstPtr; }
+
                 BSTIter_const(const BSTIter<T>& other)
-                { _bstPtr = other._bstPtr; }
+                { *this = other.base(); }
 
 			    BSTIter_const& operator=(const BSTIter_const& other) {
 				    if (this != &other)
@@ -147,10 +153,10 @@ namespace ft {
                 { return (!(_bstPtr == other._bstPtr)); }
 
                 bool operator==(const BSTIter<T>& other)
-                { return (_bstPtr == other._bstPtr); }
+                { return (this->base() == other.base()); }
 
                 bool operator!=(const BSTIter<T>& other)
-                { return (!(_bstPtr == other._bstPtr)); }
+                { return (!(this->base() == other.base())); }
 
                 BSTIter_const operator++() {
                     _bstPtr = _nodeNextItr(_bstPtr);
@@ -210,7 +216,7 @@ namespace ft {
                     return tmp;
 				}
 
-            public:
+            private:
                 pointer _bstPtr;
         };
 }

@@ -9,17 +9,21 @@ void MapSpeed() {
     start = clock();
     for (int i = 0; i < 1000000; i++) {
         int element = rand();
-        std::cout << "inserting pair <" << element << " " << i << " >" << std::endl; 
+        if (i % 1000 == 0)
+            std::cout << "#";
         m.insert( container::make_pair(element, i));
     }
+    std::cout << std::endl;
     std::cout << "deleting all..." << std::endl;
     size_t size = m.size();
     std::cout << size << std::endl;
     for (size_t i = 0; i < size; i++) {
         container::map<int,int>::iterator itr = m.begin();
-        std::cout << "deleting pair <" << itr->first << " " << itr->second << " >" << std::endl;
+        if (i % 1000 == 0)
+            std::cout << "#";
         m.erase(itr->first);
     }
+    std::cout << std::endl;
     if (m.empty())
         std::cout << "all deleted!" << std::endl;
     end = clock();

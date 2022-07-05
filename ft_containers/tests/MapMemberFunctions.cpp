@@ -27,10 +27,13 @@ void mapMemberFunctions() {
     //PrintMap(m,it);
     m.insert( pair_type("Root", 0) );
     check_type b = m.insert( pair_type("Root", 2) );
+    check_type c = m.insert( pair_type("Xoot", 2) );
+    if (!c.second)
+        std::cout << "The key " << c.first->first << " with value " << c.first->second << " already belongs to BST" << std::endl;
     if (!b.second)
         std::cout << "The key " << b.first->first << " with value " << b.first->second << " already belongs to BST" << std::endl;
     PrintMap(m, it);
-    m.insert(m.begin(),pair_type("Branch A", 1) ); // max efficiency inserting
+    m.insert(m.begin(),pair_type("Branch A", 1) ); 
     iterator get = m.insert(m.begin(),pair_type("Branch B", 2) ); // no efficiency inserting
     m.insert( pair_type("Branch C", 3) );
     m.insert( pair_type("branch D", 4) );

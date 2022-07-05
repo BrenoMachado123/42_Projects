@@ -23,6 +23,9 @@ namespace ft {
 			    BSTIter_rev(const BSTIter_rev& other)
                 { *this = other; }
 
+                pointer base() const
+                { return _bstRevPtr; }
+
 			    BSTIter_rev& operator=(const BSTIter_rev& other) {
 				    if (this != &other)
 				    	this->_bstRevPtr = other._bstRevPtr;
@@ -106,7 +109,7 @@ namespace ft {
                     return tmp;
 				}
 
-            public:
+            private:
                 pointer _bstRevPtr;
         };
 
@@ -123,8 +126,12 @@ namespace ft {
                 BSTIter_const_rev(pointer ptr) : _bstRevPtr(ptr) {}
 			    BSTIter_const_rev(const BSTIter_const_rev& other)
                 { *this = other; }
+
+                pointer base() const
+                { return _bstRevPtr; }
+
                 BSTIter_const_rev(const BSTIter_rev<T>& other)
-                { _bstRevPtr = other._bstRevPtr; }
+                {  _bstRevPtr = other.base(); }
 
 			    BSTIter_const_rev& operator=(const BSTIter_const_rev& other) {
 				    if (this != &other)
@@ -146,10 +153,10 @@ namespace ft {
                 { return (!(_bstRevPtr == other._bstRevPtr)); }
 
                 bool operator==(const BSTIter_rev<T>& other)
-                { return (_bstRevPtr == other._bstRevPtr); }
+                { return (this->base() == other.base()); }
 
                 bool operator!=(const BSTIter_rev<T>& other)
-                { return (!(_bstRevPtr == other._bstRevPtr)); }
+                { return (!(this->base() == other.base())); }
 
                 BSTIter_const_rev operator++() {
                     _bstRevPtr = _nodePrevItr(_bstRevPtr);
@@ -209,7 +216,7 @@ namespace ft {
                     return tmp;
 				}
 
-            public:
+            private:
                 pointer _bstRevPtr;
         };
 }
