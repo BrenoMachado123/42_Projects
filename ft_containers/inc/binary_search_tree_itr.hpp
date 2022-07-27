@@ -140,10 +140,10 @@ namespace ft {
 			    }
 			    ~BSTIter_const() {}
 
-                value_type* operator->() const
+                const value_type* operator->() const
                 { return &_bstPtr->data; }
 
-                value_type& operator*() const
+                const value_type& operator*() const
                 { return _bstPtr->data; }
                 
                 bool operator==(const BSTIter_const& other) 

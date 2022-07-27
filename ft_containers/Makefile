@@ -1,10 +1,19 @@
-NAME = containersTester
+NAME = containers
+FT_NAME = ft_container
+STD_NAME = std_container
+
+INC_DIR     = inc
+FLAGS_INC   = -I $(INC_DIR)
 
 CC = c++
+CFLAGS = -Wall -Wextra -Werror $(FLAGS_INC) -std=c++98
+DEL = rm -rf
 
-INC = -I inc
-
-CPPFLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=leak
+YELLOW='\033[33m'
+NONE='\033[0m'
+GREEN='\033[32m'
+GRAY='\033[2;37m'
+STYLE='\033[3m'
 
 SRC =	tests/VectorConstruction.cpp \
 		tests/VecIterators.cpp \
@@ -21,56 +30,38 @@ SRC =	tests/VectorConstruction.cpp \
 		tests/StackRelationalOperators.cpp \
 		tests/main.cpp \
 
-STD_OBJS_DIR = std_objs
+STD_OBJS = $(SRC:cpp=std.o)
+FT_OBJS = $(SRC:cpp=ft.o)
 
-STD_OBJ =  $(SRC:tests/%.cpp=std_objs/%.o)
+all: $(STD_NAME) $(FT_NAME)
 
+$(NAME) : all
 
-FT_OBJS_DIR = ft_objs
+$(STD_NAME): $(STD_OBJS)
+	@echo $(STYLE)$(YELLOW) ">> Compiling $(STD_NAME) <<"$(GRAY)
+	$(CC) $(CFLAGS) -o $(STD_NAME) $(STD_OBJS)
+	@echo $(NONE)$(STYLE)$(GREEN) "<< $(STD_NAME) compiled >>" $(NONE)
 
-FT_OBJ = $(SRC:tests/%.cpp=ft_objs/%.o)
+$(FT_NAME): $(FT_OBJS)
+	@echo $(STYLE)$(YELLOW) ">> Compiling $(FT_NAME) <<"$(GRAY)
+	$(CC) $(CFLAGS) -o $(FT_NAME) $(FT_OBJS)
+	@echo $(NONE)$(STYLE)$(GREEN) "<< $(FT_NAME) compiled >>" $(NONE)
 
-DEL = rm -rf
+%.std.o: %.cpp
+	${CC} ${CFLAGS} $(FLAGS_INC) -c $< -o $@
 
-YELLOW='\033[33m'
-NONE='\033[0m'
-GREEN='\033[32m'
-GRAY='\033[2;37m'
-STYLE='\033[3m'
-
-
-all: compile_ft compile_std
-
-compile_std : $(STD_OBJ)
-	@echo $(STYLE)$(YELLOW) ">> Compiling std_$(NAME) <<"$(GRAY)
-	$(CC) $(CPPFLAGS) $(STD_OBJ) -o std_$(NAME)
-	@echo $(NONE)$(STYLE)$(GREEN) "<< std_ $(NAME) compiled >>" $(NONE)
-
-
-compile_ft : $(FT_OBJ)
-	@echo $(STYLE)$(YELLOW) ">> Compiling ft_$(NAME) <<"$(GRAY)
-	$(CC) $(CPPFLAGS) $(FT_OBJ) -o ft_$(NAME)
-	@echo $(NONE)$(STYLE)$(GREEN) "<< ft_$(NAME) compiled >>" $(NONE)
-
-$(FT_OBJS_DIR)/%.o:tests/%.cpp
-	@mkdir -pv $(FT_OBJS_DIR)
-	$(CC)	$(CPPFLAGS) -D FT=42 $(INC) -c $< -o $@
-	
-$(STD_OBJS_DIR)/%.o:tests/%.cpp
-	@mkdir -pv $(STD_OBJS_DIR)
-	$(CC)	$(CPPFLAGS) $(INC) -c $< -o $@
+%.ft.o: %.cpp
+	${CC} ${CFLAGS} $(FLAGS_INC) -D FT=42 -c $< -o $@
 
 clean:
-	@echo $(STYLE)$(YELLOW) ">> Deleting files <<"$(NONE)
-	$(DEL) $(STD_OBJS_DIR) $(FT_OBJS_DIR)
-	@echo $(STYLE)$(GREEN) "<< Files deleted >>"$(NONE)
+	@echo $(STYLE)$(YELLOW) ">> Deleting objects <<"$(GRAY)
+	$(DEL) $(STD_OBJS) $(FT_OBJS)
+	@echo $(NONE)$(STYLE)$(GREEN) "<< Objects deleted >>"$(NONE)
 
 fclean: clean
-	$(DEL) ft_$(NAME) std_$(NAME)
+	@$(DEL) $(STD_NAME) $(FT_NAME)
 
-re:
-	@echo $(STYLE)$(YELLOW) ">> Recompiling ft_$(NAME) <<" $(NONE)
-	@echo $(STYLE)$(YELLOW) ">> Recompiling std_$(NAME) <<" $(NONE)
-	@make fclean all
+re: fclean all
 
-.PHONY : all re compile_std compile_ft clean fclean
+compile_std: fclean $(STD_OBJS) $(STD_NAME)
+compile_ft: fclean $(FT_OBJS) $(FT_NAME)
