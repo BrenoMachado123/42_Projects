@@ -15,6 +15,7 @@
 # endif
 
 #include <iostream>
+#include <cstdlib>
 
 void VectorConstruction();
 void MemberFunctions();

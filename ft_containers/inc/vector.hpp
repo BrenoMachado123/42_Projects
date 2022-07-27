@@ -125,14 +125,16 @@ namespace ft {
 					void assign(InputIterator first, InputIterator last,
 						typename enable_if<!is_integral<InputIterator>::value>::type* = 0) {
 						clear();
-						_reAlloc(last - first);
+						if ((std::size_t)_getRange(first, last) > _capacity)
+							_reAlloc(last - first);
 						for (; first != last; first++)
 							push_back(*first);
 				}
 
 				void assign (size_type n, const value_type& val) {
 					clear();
-					_reAlloc(n);
+					if (n > _capacity)
+						_reAlloc(n);
 					while (_size < n)
 						push_back(val);
 				}
@@ -282,7 +284,7 @@ namespace ft {
 
 				std::string at_errorMsg(size_type __n) const {
 					std::stringstream ss;
-					ss << "vector::__M__range_check: __n (which is " << __n << ") >= this->size() (which is " << _size << ")";
+					ss << "vector::_M_range_check: __n (which is " << __n << ") >= this->size() (which is " << _size << ")";
 					return (ss.str());
 				}
 				//reallocate the vector capacity; 
