@@ -13,6 +13,18 @@ namespace ft {
 			BstNode(type data) :
 			data(data), left(pointer()), right(pointer()), parent(pointer()), unique(false) {}
 
+			BstNode& operator=(const BstNode& other)
+			{
+				if (this != &other) {
+					data = other.data;
+					left = other.left;
+					right = other.right;
+					parent = other.parent;
+					unique = other.unique;
+				}
+				return *this;
+			}
+
 			type data;
 			pointer left;
 			pointer right;

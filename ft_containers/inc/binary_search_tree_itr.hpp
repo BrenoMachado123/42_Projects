@@ -4,11 +4,9 @@
 #include <iostream>
 #include "BstNode_structure.hpp"
 #include "ft_pair.hpp"
-
-template<class T>
-class BSTIter_const;
-
 namespace ft {
+    template<class T>
+        class BSTIter_const;
     template <class T>
         class BSTIter {
             public:
@@ -39,17 +37,17 @@ namespace ft {
                 value_type& operator*() const
                 { return _bstPtr->data; }
                 
-                bool operator==(const BSTIter& other)
-                { return (_bstPtr == other._bstPtr); }
+                bool operator==(const BSTIter& other) const
+                { return (_bstPtr == other.base()); }
 
-                bool operator!=(const BSTIter& other)
-                { return (!(_bstPtr == other._bstPtr)); }
+                bool operator==(const BSTIter_const<T>& other) const
+                { return (this->base() == other.base()); }
 
-                bool operator==(const BSTIter_const<T>& other)
-                { return (_bstPtr == other._bstPtr); }
+                bool operator!=(const BSTIter& other) const
+                { return (!(this->base() == other.base())); }
 
-                bool operator!=(const BSTIter_const<T>& other)
-                { return (!(_bstPtr == other._bstPtr)); }
+                bool operator!=(const BSTIter_const<T>& other) const
+                { return (!(_bstPtr == other.base())); }
 
                 BSTIter operator++() {
                     _bstPtr = _nodeNextItr(_bstPtr);

@@ -11,7 +11,7 @@ template<typename T, typename InputIterator>
     }
 
 void MapRelationalOperators() {
-    typedef typename container::map<char, int> char_map_type;
+    typedef container::map<char, int> char_map_type;
     char_map_type::iterator char_itr;
 
     char_map_type foo;

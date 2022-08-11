@@ -35,8 +35,7 @@ namespace ft {
 						this->insert(tmp->data);
 						tmp = _findMin(other._tree);
 						while (tmp != NULL) {
-							if (tmp != other.getEnd())
-								this->insert(tmp->data);
+							this->insert(tmp->data);
 							tmp = _nodeNext(tmp);
 						}
 					}
@@ -106,6 +105,21 @@ namespace ft {
 
 				bool isNodeUnique()
 				{ return _nodeUnique; }
+
+				void swap(BST& x)
+				{
+					size_type tmp_size;
+					BSTNode* tmp_root;
+
+					tmp_size = _size;
+					tmp_root = _tree;
+
+					_tree = x._tree;
+					_size = x._size;
+
+					x._tree = tmp_root;
+					x._size = tmp_size;
+				}
 
 			private:
 				BSTNode* createNode(const value_type& key) {

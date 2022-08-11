@@ -16,10 +16,10 @@ template<typename T, typename InputIterator>
     }
 
 void mapMemberFunctions() {
-    typedef typename container::pair<std::string, int> pair_type;
-    typedef typename container::map<std::string, int>::iterator iterator; 
-    typedef typename container::pair<iterator, bool> check_type;
-    typedef typename container::map<std::string, int> map_type;
+    typedef container::pair<std::string, int> pair_type;
+    typedef container::map<std::string, int>::iterator iterator; 
+    typedef container::pair<iterator, bool> check_type;
+    typedef container::map<std::string, int> map_type;
 
     // insert
     iterator it;

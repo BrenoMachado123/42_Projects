@@ -162,9 +162,20 @@ namespace ft {
 				}
 
 				void swap (vector& x) {
-					vector tmp = *this;
-					*this = x;
-					x = tmp;
+					allocator_type tmp_alloc = _alloc;
+					size_type tmp_size = _size;
+					pointer tmp_buff = _buff;
+					size_type tmp_capacity = _capacity;
+
+					_alloc = x._alloc;
+					_size = x._size;
+					_buff = x._buff;
+					_capacity = x._capacity;
+
+					x._alloc = tmp_alloc;
+					x._size = tmp_size;
+					x._buff = tmp_buff;
+					x._capacity = tmp_capacity;
 				}
 
 				iterator insert (iterator position, const value_type& val = value_type() ) {
