@@ -11,12 +11,13 @@ template<class T>
 	struct BstNode;
 
 namespace ft {
-	template<class T, class DefaultAlloc = std::allocator<T>, class BSTNodeType = ft::BstNode<T>, class BSTNodeAlloc = std::allocator< BSTNodeType > >
+	template<class T, class Key, class DefaultAlloc = std::allocator<T>, class Compare = std::less<Key>, class BSTNodeType = ft::BstNode<T>, class BSTNodeAlloc = std::allocator< BSTNodeType > >
 		class BST {
 			typedef T value_type;
 			typedef BSTNodeType BSTNode;
 			typedef BSTNodeAlloc node_allocator_type;
 			typedef DefaultAlloc allocator_type;
+			typedef Compare compare_type;
 			typedef typename std::size_t size_type;
 
 			public:
@@ -146,15 +147,15 @@ namespace ft {
 					BSTNode* tmp = NULL;
 					while (current) {
 						tmp = current;
-						if (current->data.first < key.first)
+						if (_comp(current->data.first, key.first))
 							current = current->right;
-						else if (current->data.first > key.first)
+						else
 							current = current->left;
 					}
-					if (tmp->data.first > key.first) {
+					if (!_comp(tmp->data.first, key.first)) {
 						tmp->left = createNode(key);
 						tmp->left->parent = tmp;
-					} else if (tmp->data.first < key.first) {
+					} else {
 						tmp->right = createNode(key);
 						tmp->right->parent = tmp;
 					}
@@ -235,12 +236,12 @@ namespace ft {
 						return NULL;
 					BSTNode* tmp = node;
 					while (tmp) {
-						if (tmp->data.first < item.first)
-							tmp = tmp->right;
-						else if (tmp->data.first > item.first)
-							tmp = tmp->left;
-						else
+						if (tmp->data.first == item.first)
 							return tmp;
+						if (_comp(tmp->data.first, item.first))
+							tmp = tmp->right;
+						else
+							tmp = tmp->left;
 					}
 					return NULL;
 				}
@@ -306,6 +307,7 @@ namespace ft {
 				BSTNode* _tree;
 				node_allocator_type _allocNode;
 				allocator_type _alloc;
+				compare_type _comp;
 				size_type _size;
 				bool _nodeUnique;
 		};

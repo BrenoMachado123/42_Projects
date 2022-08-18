@@ -224,7 +224,7 @@ namespace ft {
 				{ return _tree.search(key) != _tree.getEnd(); }
 
 			protected:
-				ft::BST<value_type, allocator_type> _tree;
+				ft::BST<value_type, key_type, allocator_type, key_compare> _tree;
 				allocator_type _alloc;
 				key_compare _kcmp;
 		};
