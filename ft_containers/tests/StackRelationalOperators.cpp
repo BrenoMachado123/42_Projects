@@ -1,6 +1,7 @@
 #include "../inc/Vector_tests.hpp"
 
-void StackRelationalOperators() {
+void StackRelationalOperators()
+{
     container::stack<int> v1;
     v1.push(3);
     v1.push(5);
@@ -14,10 +15,16 @@ void StackRelationalOperators() {
     v2.push(92);
     v2.push(13);
 
-    if (v1 == v2) std::cout << "v1 == v2" << std::endl;
-    if (v1 != v2) std::cout << "v1 != v2" << std::endl;
-    if (v1 < v2) std::cout << "v1 < v2" << std::endl;
-    if (v1 > v2) std::cout << "v1 > v2" << std::endl;
-    if (v1 >= v2) std::cout << "v1 >= v2" << std::endl;
-    if (v1 <= v2) std::cout << "v1 <= v2" << std::endl;
+    if (v1 == v2)
+        std::cout << "v1 == v2" << std::endl;
+    if (v1 != v2)
+        std::cout << "v1 != v2" << std::endl;
+    if (v1 < v2)
+        std::cout << "v1 < v2" << std::endl;
+    if (v1 > v2)
+        std::cout << "v1 > v2" << std::endl;
+    if (v1 >= v2)
+        std::cout << "v1 >= v2" << std::endl;
+    if (v1 <= v2)
+        std::cout << "v1 <= v2" << std::endl;
 }
