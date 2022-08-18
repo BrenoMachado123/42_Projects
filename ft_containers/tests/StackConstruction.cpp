@@ -8,10 +8,10 @@ void StackConstruction()
     container::vector<int> myvector(2, 200);
 
     container::stack<int> first;
-    container::stack<int, std::deque<int>> second(mydeque);
+    container::stack<int, std::deque<int> > second(mydeque);
 
-    container::stack<int, container::vector<int>> third;
-    container::stack<int, container::vector<int>> fourth(myvector);
+    container::stack<int, container::vector<int> > third;
+    container::stack<int, container::vector<int> > fourth(myvector);
 
     std::cout << "size of first: " << first.size() << std::endl;
     std::cout << "size of second: " << second.size() << std::endl;

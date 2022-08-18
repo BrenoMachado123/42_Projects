@@ -12,7 +12,7 @@ struct BstNode;
 
 namespace ft
 {
-	template <class T, class Key, class DefaultAlloc = std::allocator<T>, class Compare = std::less<Key>, class BSTNodeType = ft::BstNode<T>, class BSTNodeAlloc = std::allocator<BSTNodeType>>
+	template <class T, class Key, class DefaultAlloc = std::allocator<T>, class Compare = std::less<Key>, class BSTNodeType = ft::BstNode<T>, class BSTNodeAlloc = std::allocator<BSTNodeType> >
 	class BST
 	{
 		typedef T value_type;
