@@ -1,8 +1,17 @@
 #!/bin/bash
 
+#References:
+# https://blog.devart.com/mariadb-tutorial-an-introductory-guide-with-examples.html#what-is-mariadb
+# https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/
+# https://exampleconfig.com/view/mariadb-ubuntu18-04-etc-mysql-mariadb-conf-d-50-server-cnf
+# https://unix.stackexchange.com/questions/466999/what-does-exec-do
+
 sed -ie 's/bind-address/#bind-address/g' /etc/mysql/mariadb.conf.d/50-server.cnf
 sed -ie 's/#port/port/g' /etc/mysql/mariadb.conf.d/50-server.cnf
 
+# In order to have a secure mariadb installation, this script is taken from:
+# https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/
+# Once that mariadb database is defined and installed, there is no need to execute it again.
 if [ ! -d /var/lib/mysql/$MYSQL_DATABASE ]
 then
 service mysql start

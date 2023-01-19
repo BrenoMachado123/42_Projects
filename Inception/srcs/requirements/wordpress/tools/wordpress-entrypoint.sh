@@ -1,7 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
+# References:
+# https://www.howtoforge.com/tutorial/dockerizing-wordpress-with-nginx-and-php-fpm/
+# https://stackoverflow.com/questions/42720618/docker-nginx-stopped-emerg-11-host-not-found-in-upstream
+# https://www.hostinger.com/tutorials/run-docker-wordpress
+# https://www.php.net/manual/en/install.fpm.php
+# https://computingforgeeks.com/how-to-install-php-7-3-on-debian-9-debian-8/
+
+
+# Creating /run/php to fix error at php-fm installation:
+# https://itecnote.com/tecnote/php-unable-to-bind-listening-socket-for-address-php-fpm/
 mkdir /run/php/
 
+# Copying installed wordpress to var/www/html in order to enable it at ngnix server
+# If wp-config.php already exists, there is no reason to do this again.
 if [ ! -f var/www/html/wp-config.php ]
 then
 	cp -r wordpress/* var/www/html/

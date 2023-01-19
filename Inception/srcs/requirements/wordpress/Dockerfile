@@ -20,9 +20,9 @@ RUN wget https://wordpress.org/latest.tar.gz
 RUN tar -xvzf latest.tar.gz
 RUN rm latest.tar.gz
 
-# Running wordpress
-
+# Copying wp-config.php from conf
 COPY conf/wp-config.php .
 
+# Running wordpress and php-fm
 ENTRYPOINT ["bash", "/usr/bin/wordpress-entrypoint.sh"]
 CMD [ "./usr/sbin/php-fpm7.3", "-F" ]

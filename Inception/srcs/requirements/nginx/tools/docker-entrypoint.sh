@@ -1,3 +1,8 @@
+# References:
+# https://www.ibm.com/docs/en/api-connect/10.0.1.x?topic=overview-generating-self-signed-certificate-using-openssl
+# https://linuxize.com/post/creating-a-self-signed-ssl-certificate/
+
+
 # Create ssl folder
 mkdir -p /etc/nginx/ssl
 chmod 700 /etc/nginx/ssl/
@@ -11,10 +16,7 @@ openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
         -keyout /etc/nginx/ssl/ssl_certificate.key \
         -subj "/C=PO/ST=Portugal/L=Lisbon/O=42School/OU=42Lisboa/CN=bmachado.42.fr";
 
-#unlink /etc/nginx/sites-enabled/default
-#ln -s /etc/nginx/sites-available/default_page.conf /etc/nginx/sites-enabled/
-
-# Disable gzip to enable SSH
+# Disable gzip to enable SSH: 
 sed -ie 's/gzip on;/gzip off;/g' /etc/nginx/nginx.conf
 
 # Run ngnix container
