@@ -6,6 +6,7 @@ services:
   mariadb:
     build: requirements/mariadb/
     container_name: mariadb
+    image: inception_mariadb:42
     init: true
     environment:
       - MYSQL_ROOT_PASSWORD
@@ -23,6 +24,7 @@ services:
   wordpress:
     build: requirements/wordpress/
     container_name: wordpress
+    image: inception_wordpress:42
     init: true
     environment:
       - MYSQL_USER
@@ -41,6 +43,7 @@ services:
   nginx:
     build: requirements/nginx/
     container_name: nginx
+    image: inception_nginx:42
     init: true
     environment:
       - DOMAIN_NAME

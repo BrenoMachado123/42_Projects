@@ -12,8 +12,9 @@
 # https://itecnote.com/tecnote/php-unable-to-bind-listening-socket-for-address-php-fpm/
 mkdir /run/php/
 
-# Copying installed wordpress to var/www/html in order to enable it at ngnix server
-# If wp-config.php already exists, there is no reason to do this again.
+# Copying installed wordpress content to var/www/html in order to enable it at ngnix server
+# Also assign the enviroment variables inside wp-config.php
+# If wp-config.php already exists, there is no reason to copy wordpress files again.
 if [ ! -f var/www/html/wp-config.php ]
 then
 	cp -r wordpress/* var/www/html/
@@ -24,9 +25,14 @@ then
 	mv wp-config.php var/www/html
 	rm var/www/html/wp-config-sample.php
 else
-	echo "wp-config.php already defined"
+	echo "wordpress already moved, just update wp-config.php only"
+	sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" wp-config.php
+	sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" wp-config.php
+	sed -i "s/MYSQL_USER/$MYSQL_USER/g" wp-config.php
+	mv wp-config.php var/www/html/wp-config.php
 fi
 
+# Making php-fm listen to port 9000.
 sed -ie 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 0.0.0.0:9000/g' \
 /etc/php/7.3/fpm/pool.d/www.conf
 
