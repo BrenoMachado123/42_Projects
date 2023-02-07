@@ -4,7 +4,7 @@ build: create_containers_mounts
 	@cd srcs && docker-compose up --build -d
 
 docker_compose_up: create_containers_mounts
-	@docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
+	@cd srcs && docker-compose --env-file .env up -d
 
 create_containers_mounts:
 	@sudo mkdir -pv ~/data/mariadb

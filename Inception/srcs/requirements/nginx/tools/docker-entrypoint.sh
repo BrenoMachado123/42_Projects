@@ -7,8 +7,10 @@
 mkdir -p /etc/nginx/ssl
 chmod 700 /etc/nginx/ssl/
 
-# Set DOMAIN_NAME from .env
-sed -ie s/'$DOMAIN_NAME'/$DOMAIN_NAME/g /etc/nginx/conf.d/wordpress.conf
+# Set DOMAIN_NAME from .env in wordpress.conf
+envsubst < /etc/nginx/conf.d/wordpress.conf > wordpress.conf
+rm /etc/nginx/conf.d/wordpress.conf
+mv wordpress.conf /etc/nginx/conf.d/
 
 # Create ssl certificate
 openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \

@@ -19,17 +19,12 @@ if [ ! -f var/www/html/wp-config.php ]
 then
 	cp -r wordpress/* var/www/html/
 	rm -rf wordpress
-	sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" wp-config.php
-	sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" wp-config.php
-	sed -i "s/MYSQL_USER/$MYSQL_USER/g" wp-config.php
-	mv wp-config.php var/www/html
+	envsubst < wp-config.php > wp_config_env.php
+	mv	wp_config_env.php var/www/html/
+	mv	var/www/html/wp_config_env.php wp_config.php
 	rm var/www/html/wp-config-sample.php
 else
-	echo "wordpress already moved, just update wp-config.php only"
-	sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" wp-config.php
-	sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" wp-config.php
-	sed -i "s/MYSQL_USER/$MYSQL_USER/g" wp-config.php
-	mv wp-config.php var/www/html/wp-config.php
+	echo "wordpress already moved"
 fi
 
 # Making php-fm listen to port 9000.

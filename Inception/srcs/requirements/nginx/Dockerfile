@@ -5,6 +5,7 @@ FROM debian:buster
 RUN apt-get -yq update && apt-get -yq install nginx
 RUN apt-get -yq install vim
 RUN apt-get -yq install openssl
+RUN apt-get -y install gettext-base
 
 # Copying a ngnix configuration file from conf
 COPY /conf/wordpress.conf /etc/nginx/conf.d/

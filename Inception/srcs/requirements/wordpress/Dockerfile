@@ -10,6 +10,7 @@ RUN apt-get install php7.3-cli php7.3-fpm php7.3-mysql php7.3-json php7.3-opcach
                     php-net-socket php7.3-common php7.3-gd php7.3-curl \
                     php-xml-util php7.3-gettext php7.3-bcmath -yq
 RUN apt-get install -yq mariadb-client
+RUN apt-get install gettext-base
 
 # Copying entrypoint from tools
 COPY /tools/wordpress-entrypoint.sh /usr/bin/
