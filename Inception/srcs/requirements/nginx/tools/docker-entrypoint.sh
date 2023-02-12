@@ -8,7 +8,7 @@ mkdir -p /etc/nginx/ssl
 chmod 700 /etc/nginx/ssl/
 
 # Set DOMAIN_NAME from .env in wordpress.conf
-envsubst < /etc/nginx/conf.d/wordpress.conf > wordpress.conf
+envsubst '\$DOMAIN_NAME' < /etc/nginx/conf.d/wordpress.conf > wordpress.conf
 rm /etc/nginx/conf.d/wordpress.conf
 mv wordpress.conf /etc/nginx/conf.d/
 

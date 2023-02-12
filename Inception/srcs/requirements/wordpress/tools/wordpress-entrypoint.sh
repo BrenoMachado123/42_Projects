@@ -21,8 +21,23 @@ then
 	rm -rf wordpress
 	envsubst < wp-config.php > wp_config_env.php
 	mv	wp_config_env.php var/www/html/
-	mv	var/www/html/wp_config_env.php wp_config.php
+	mv	var/www/html/wp_config_env.php var/www/html/wp-config.php
 	rm var/www/html/wp-config-sample.php
+
+	# Create admin and user for wordpress site
+	cd var/www/html/
+	wp core install --allow-root \
+	--url=https://$DOMAIN_NAME \
+	--title=title_$MYSQL_USER \
+	--admin_user=adm$MYSQL_USER \
+	--admin_password=adm$MYSQL_PASSWORD \
+	--admin_email=adm$MYSQL_USER@gmail.com \
+	wp user create --allow-root \
+		$MYSQL_USER \
+		$MYSQL_USER@gmail.com \
+		--role=author \
+		--user_pass=$MYSQL_PASSWORD
+
 else
 	echo "wordpress already moved"
 fi

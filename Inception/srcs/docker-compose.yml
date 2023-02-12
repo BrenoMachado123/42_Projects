@@ -30,6 +30,7 @@ services:
       - MYSQL_USER
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
+      - DOMAIN_NAME
     depends_on:
       - mariadb
     networks:

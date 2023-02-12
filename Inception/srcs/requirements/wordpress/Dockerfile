@@ -23,6 +23,11 @@ RUN rm latest.tar.gz
 # Copying wp-config.php from conf
 COPY conf/wp-config.php .
 
+# Installing wp-cli : https://wp-cli.org/
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
+
 # Running wordpress and php-fm
 ENTRYPOINT ["bash", "/usr/bin/wordpress-entrypoint.sh"]
 CMD [ "./usr/sbin/php-fpm7.3", "-F" ]
