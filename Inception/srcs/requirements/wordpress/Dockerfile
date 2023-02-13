@@ -30,4 +30,3 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Running wordpress and php-fm
 ENTRYPOINT ["bash", "/usr/bin/wordpress-entrypoint.sh"]
-CMD [ "./usr/sbin/php-fpm7.3", "-F" ]

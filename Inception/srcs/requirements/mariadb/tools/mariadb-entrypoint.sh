@@ -34,6 +34,7 @@ FLUSH PRIVILEGES;
 EOF
 
 service mysql stop
+
 fi
 
 exec "$@"

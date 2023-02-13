@@ -69,7 +69,7 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/$USER/data/mariadb
+      device: ~/data/mariadb
 
   wordpress:
     name: wordpress_volume
@@ -77,4 +77,4 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/$USER/data/wordpress
+      device: ~/data/wordpress

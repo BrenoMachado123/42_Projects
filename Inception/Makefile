@@ -13,6 +13,8 @@ create_containers_mounts:
 delete_containers_mounts:
 	@sudo rm -rf ~/data/mariadb
 	@sudo rm -rf ~/data/wordpress
+	@sudo docker volume rm mariadb_volume
+	@sudo docker volume rm wordpress_volume
 
 
 clean:
