@@ -30,6 +30,8 @@ services:
       - MYSQL_USER
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
+      - WPADM_NAME
+      - WPADM_PASSWORD 
       - DOMAIN_NAME
     depends_on:
       - mariadb

@@ -18,7 +18,7 @@ openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
         -keyout /etc/nginx/ssl/ssl_certificate.key \
         -subj "/C=PO/ST=Portugal/L=Lisbon/O=42School/OU=42Lisboa/CN=bmachado.42.fr";
 
-# Disable gzip to enable SSH: 
+# Disable gzip to enable SSH:
 sed -ie 's/gzip on;/gzip off;/g' /etc/nginx/nginx.conf
 
 # Run ngnix container

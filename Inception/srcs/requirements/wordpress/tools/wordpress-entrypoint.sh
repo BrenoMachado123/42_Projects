@@ -32,10 +32,10 @@ cd /var/www/html/
 if ! wp core is-installed --allow-root; then
 	wp core install --allow-root \
 		--url="https://$DOMAIN_NAME" \
-        	--title="title_$MYSQL_USER" \
-        	--admin_user="adm$MYSQL_USER" \
-        	--admin_password="adm$MYSQL_PASSWORD" \
-        	--admin_email="adm$MYSQL_USER@gmail.com"
+        	--title="$WPADM_NAME website" \
+        	--admin_user="$WPADM_NAME" \
+        	--admin_password="$WPADM_PASSWORD" \
+        	--admin_email="$WPADM_NAME@gmail.com"
 
 	wp user create --allow-root "$MYSQL_USER" "$MYSQL_USER@gmail.com" \
                 	--role="author" \
